@@ -212,7 +212,6 @@ func TestUnmarshalMultipleClusters(t *testing.T) {
 		{wrapper.Body.Items[0].Servers[1].Name, "ms2"},
 		{wrapper.Body.Items[0].Servers[1].State, "RUNNING"},
 		{wrapper.Body.Items[0].Servers[1].Health, "HEALTH_OVERLOADED"},
-
 	}
 
 	for _, tt := range servers_json_tests {
