@@ -156,9 +156,9 @@ type Application struct {
 	Health                string
 	TargetStates          []TargetState          `json:"targetStates,omitempty"`
 	DataSources           []AppDataSource        `json:"dataSources,omitempty"`
-	WorkManagers          []WorkManager          `json:"workManagers,omitempty`
-	MinThreadsConstraints []MinThreadsConstraint `json:"minThreadsConstraints,omitempty`
-	MaxThreadsConstraints []MaxThreadsConstraint `json:"minThreadsConstraints,omitempty"`
+	WorkManagers          []WorkManager          `json:"workManagers,omitempty"`
+	MinThreadsConstraints []MinThreadsConstraint `json:"minThreadsConstraints,omitempty"`
+	MaxThreadsConstraints []MaxThreadsConstraint `json:"maxThreadsConstraints,omitempty"`
 	RequestClasses        []RequestClass         `json:"requestClasses,omitempty"`
 }
 
