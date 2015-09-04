@@ -80,8 +80,7 @@ func WLSRestReq(e Environment, url string, wls interface{}) error {
 
 func (w *ServerWrapper) Servers(e Environment) error {
 	url := fmt.Sprintf("http://%v:%v%v/servers", e.Server.Host, e.Server.Port, MONITOR_PATH)
-	var wrapper ServerWrapper
-	err := WLSRestReq(e, url, &wrapper)
+	err := WLSRestReq(e, url, &w)
 	if err != nil {
 		return err
 	}
@@ -126,8 +125,7 @@ type ClusterWrapper struct {
 
 func (w *ClusterWrapper) Clusters(e Environment, full_format bool) error {
 	url := fmt.Sprintf("http://%v:%v%v/clusters", e.Server.Host, e.Server.Port, MONITOR_PATH)
-	var wrapper ClusterWrapper
-	err := WLSRestReq(e, url, &wrapper)
+	err := WLSRestReq(e, url, &w)
 	if err != nil {
 		return err
 	}
