@@ -92,18 +92,3 @@ func unmarshalWrapper(data []byte) (*Wrapper, error) {
 	}
 	return &w, nil
 }
-
-//
-//func (w *Wrapper) getItem(r *interface{}) error {
-//	if err := json.Unmarshal(w.Body.Item, r); err != nil {
-//		return err
-//	}
-//	return nil
-//}
-//
-//func (w *Wrapper) getItems(r *interface{}) error {
-//	if err := json.Unmarshal(w.Body.Items, &r); err != nil {
-//		return err
-//	}
-//	return nil
-//}
