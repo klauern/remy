@@ -32,7 +32,7 @@ func TestUnmarshalMultipleApplications(t *testing.T) {
 	}
 	t.Log(wrapper)
 	var applications []Application
-	if err := json.Unmarshal(wrapper.Body.Items, applications); err != nil {
+	if err := json.Unmarshal(wrapper.Body.Items, &applications); err != nil {
 		t.Error(err)
 	}
 	if len(applications) == 0 {

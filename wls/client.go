@@ -86,7 +86,7 @@ func request(url string, e Environment) (*http.Response, error) {
 
 func unmarshalWrapper(data []byte) (*Wrapper, error) {
 	var w Wrapper
-	err := json.Unmarshal(data, w)
+	err := json.Unmarshal(data, &w)
 	if err != nil {
 		return nil, err
 	}
