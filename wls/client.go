@@ -61,40 +61,49 @@ func requestResource(url string, e Environment) (*http.Response, error) {
 	return client.Do(req)
 }
 
-func unmarshalResponse(resp *http.Response, w *Wrapper) error {
-	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
-		bodyBytes, _ := ioutil.ReadAll(resp.Body)
-		err := json.Unmarshal(bodyBytes, w)
+func requestAndUnmarshal(url string, e Environment) (*Wrapper, error) {
+	if resp, err := request(url, e); err != nil {
+		return nil, err
+	} else {
+		data, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
-			return err
+			return nil, err
 		}
-		return nil
+		return unmarshalWrapper(data)
 	}
-	return fmt.Errorf("Invalid Response Code; %v", resp.StatusCode)
 }
 
-func requestAndUnmarshal(url string, e Environment) (*Wrapper, error) {
+func request(url string, e Environment) (*http.Response, error) {
 	resp, err := requestResource(url, e)
 	if err != nil {
 		return nil, err
 	}
+	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
+		return resp, nil
+	}
+	return nil, fmt.Errorf("Invalid Response Code: %v\nResponse: %v", resp.StatusCode, resp.Body)
+}
+
+func unmarshalWrapper(data []byte) (*Wrapper, error) {
 	var w Wrapper
-	if err = unmarshalResponse(resp, &w); err != nil {
+	err := json.Unmarshal(data, w)
+	if err != nil {
 		return nil, err
 	}
 	return &w, nil
 }
 
-func (w *Wrapper) getItem(r *interface{}) error {
-	if err := json.Unmarshal(w.Body.Item, r); err != nil {
-		return err
-	}
-	return nil
-}
-
-func (w *Wrapper) getItems(r *interface{}) error {
-	if err := json.Unmarshal(w.Body.Items, &r); err != nil {
-		return err
-	}
-	return nil
-}
+//
+//func (w *Wrapper) getItem(r *interface{}) error {
+//	if err := json.Unmarshal(w.Body.Item, r); err != nil {
+//		return err
+//	}
+//	return nil
+//}
+//
+//func (w *Wrapper) getItems(r *interface{}) error {
+//	if err := json.Unmarshal(w.Body.Items, &r); err != nil {
+//		return err
+//	}
+//	return nil
+//}
