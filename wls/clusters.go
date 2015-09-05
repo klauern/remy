@@ -11,12 +11,7 @@ type ClusterService struct {
 	Environment Environment
 }
 
-//type Cluster struct {
-//	Name    string `json:"name"`
-//	Servers []Server
-//}
-
-type ClusterServer struct {
+type Cluster struct {
 	Name    string
 	Servers []struct {
 		Name                   string
@@ -30,26 +25,26 @@ type ClusterServer struct {
 	} `json:"servers,omitempty"`
 }
 
-func (s *ClusterService) Clusters() (*[]ClusterServer, error) {
+func (s *ClusterService) Clusters() (*[]Cluster, error) {
 	url := fmt.Sprintf("http://%v:%v%v/clusters", s.Environment.Server.Host, s.Environment.Server.Port, MONITOR_PATH)
 	w, err := requestAndUnmarshal(url, s.Environment)
 	if err != nil {
 		return nil, err
 	}
-	var clusters []ClusterServer
+	var clusters []Cluster
 	if err := json.Unmarshal(w.Body.Items, &clusters); err != nil {
 		return nil, err
 	}
 	return &clusters, nil
 }
 
-func (s *ClusterService) Cluster(clustername string) (*ClusterServer, error) {
+func (s *ClusterService) Cluster(clustername string) (*Cluster, error) {
 	url := fmt.Sprintf("http://%v:%v%v/clusters/%v", s.Environment.Server.Host, s.Environment.Server.Port, MONITOR_PATH, clustername)
 	w, err := requestAndUnmarshal(url, s.Environment)
 	if err != nil {
 		return nil, err
 	}
-	var cluster ClusterServer
+	var cluster Cluster
 	if err := json.Unmarshal(w.Body.Item, &cluster); err != nil {
 		return nil, err
 	}

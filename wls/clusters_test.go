@@ -37,7 +37,7 @@ func TestUnmarshalSingleCluster(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	var cluster ClusterServer
+	var cluster Cluster
 	if err := json.Unmarshal(wrapper.Body.Item, &cluster); err != nil {
 		t.Error(err)
 	}
@@ -98,7 +98,7 @@ func TestUnmarshalMultipleClusters(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	var clusters []ClusterServer
+	var clusters []Cluster
 	if err := json.Unmarshal(wrapper.Body.Items, &clusters); err != nil {
 		t.Error(err)
 	}
