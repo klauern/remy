@@ -25,8 +25,8 @@ type Cluster struct {
 	} `json:"servers,omitempty"`
 }
 
-func (s *ClusterService) Clusters() (*[]Cluster, error) {
-	url := fmt.Sprintf("http://%v:%v%v/clusters", s.Environment.Server.Host, s.Environment.Server.Port, MONITOR_PATH)
+func (s *ClusterService) Clusters() ([]Cluster, error) {
+	url := fmt.Sprintf("%v%v/clusters", s.Environment.ServerUrl, MONITOR_PATH)
 	w, err := requestAndUnmarshal(url, s.Environment)
 	if err != nil {
 		return nil, err
@@ -35,11 +35,11 @@ func (s *ClusterService) Clusters() (*[]Cluster, error) {
 	if err := json.Unmarshal(w.Body.Items, &clusters); err != nil {
 		return nil, err
 	}
-	return &clusters, nil
+	return clusters, nil
 }
 
 func (s *ClusterService) Cluster(clustername string) (*Cluster, error) {
-	url := fmt.Sprintf("http://%v:%v%v/clusters/%v", s.Environment.Server.Host, s.Environment.Server.Port, MONITOR_PATH, clustername)
+	url := fmt.Sprintf("%v%v/clusters/%v", s.Environment.ServerUrl, MONITOR_PATH, clustername)
 	w, err := requestAndUnmarshal(url, s.Environment)
 	if err != nil {
 		return nil, err

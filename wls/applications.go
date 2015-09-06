@@ -71,8 +71,8 @@ type RequestClass struct {
 	VirtualTimeIncrement int
 }
 
-func (s *ApplicationService) Applications(full_format bool) (*[]Application, error) {
-	url := fmt.Sprintf("http://%v:%v%v/applications", s.Environment.Server.Host, s.Environment.Server.Port, MONITOR_PATH)
+func (s *ApplicationService) Applications(full_format bool) ([]Application, error) {
+	url := fmt.Sprintf("%v%v/applications", s.Environment.ServerUrl, MONITOR_PATH)
 	w, err := requestAndUnmarshal(url, s.Environment)
 	if err != nil {
 		return nil, err
@@ -81,11 +81,11 @@ func (s *ApplicationService) Applications(full_format bool) (*[]Application, err
 	if err := json.Unmarshal(w.Body.Items, &applications); err != nil {
 		return nil, err
 	}
-	return &applications, nil
+	return applications, nil
 }
 
 func (s *ApplicationService) Application(app string) (*Application, error) {
-	url := fmt.Sprintf("http://%v:%v%v/applications/%v", s.Environment.Server.Host, s.Environment.Server.Port, MONITOR_PATH, app)
+	url := fmt.Sprintf("%v%v/applications/%v", s.Environment.ServerUrl, MONITOR_PATH, app)
 	w, err := requestAndUnmarshal(url, s.Environment)
 	if err != nil {
 		return nil, err

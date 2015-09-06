@@ -16,32 +16,18 @@ const (
 )
 
 type Environment struct {
-	Server   WLSServer
-	Username string
-	Password string
-}
-
-type WLSServer struct {
-	Host string
-	Port int
-}
-
-type WebLogicService struct {
-	Environment Environment
-	Server      WLSServer
-	client      *http.Client
-
-	Servers *ServerService
-
-	Clusters *ClusterService
-
-	DataSources *DataSourceService
-
-	Applications *ApplicationService
+	ServerUrl string
+	Username  string
+	Password  string
 }
 
 // All requests sent to a WLS Rest endpoint are wrapped by a similar body and item or items tag.
 // We simply wrap that so we can get to the meat of it in the underlying Server type
+//
+// Wrapper is composed of 3 pieces:
+// - Body contains the result of the resource request, included as either a specific Item (Datasource, Server,
+//   Cluster, or Application, or an array of []Item's of the same.
+// - Messages contains any error-related messages related to the query.
 type Wrapper struct {
 	Body struct {
 		Items json.RawMessage `json:"items,omitempty"`

@@ -69,8 +69,8 @@ type RacInstance struct {
 	NumUnavailable                int    `json:",omitempty"`
 }
 
-func (s *DataSourceService) DataSources() (*[]DataSource, error) {
-	url := fmt.Sprintf("http://%v:%v%v/datasources", s.Environment.Server.Host, s.Environment.Server.Port, MONITOR_PATH)
+func (s *DataSourceService) DataSources() ([]DataSource, error) {
+	url := fmt.Sprintf("%v%v/datasources", s.Environment.ServerUrl, MONITOR_PATH)
 	w, err := requestAndUnmarshal(url, s.Environment)
 	if err != nil {
 		return nil, err
@@ -79,11 +79,11 @@ func (s *DataSourceService) DataSources() (*[]DataSource, error) {
 	if err := json.Unmarshal(w.Body.Items, &datasources); err != nil {
 		return nil, err
 	}
-	return &datasources, nil
+	return datasources, nil
 }
 
 func (s *DataSourceService) DataSource(datasource_name string) (*DataSource, error) {
-	url := fmt.Sprintf("http://%v:%v%v/datasources/%v", s.Environment.Server.Host, s.Environment.Server.Port, MONITOR_PATH, datasource_name)
+	url := fmt.Sprintf("%v%v/datasources/%v", s.Environment.ServerUrl, MONITOR_PATH, datasource_name)
 	w, err := requestAndUnmarshal(url, s.Environment)
 	if err != nil {
 		return nil, err

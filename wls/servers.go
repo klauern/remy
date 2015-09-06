@@ -27,8 +27,8 @@ type Server struct {
 	JvmProcessorLoad        float64 `json:",omitempty"`
 }
 
-func (s *ServerService) Servers() (*[]Server, error) {
-	url := fmt.Sprintf("http://%v:%v%v/servers", s.Environment.Server.Host, s.Environment.Server.Port, MONITOR_PATH)
+func (s *ServerService) Servers() ([]Server, error) {
+	url := fmt.Sprintf("%v%v/servers", s.Environment.ServerUrl, MONITOR_PATH)
 	w, err := requestAndUnmarshal(url, s.Environment)
 	if err != nil {
 		return nil, err
@@ -37,11 +37,11 @@ func (s *ServerService) Servers() (*[]Server, error) {
 	if err := json.Unmarshal(w.Body.Items, &servers); err != nil {
 		return nil, err
 	}
-	return &servers, nil
+	return servers, nil
 }
 
 func (s *ServerService) Server(servername string) (*Server, error) {
-	url := fmt.Sprintf("http://%v:%v%v/servers/%v", s.Environment.Server.Host, s.Environment.Server.Port, MONITOR_PATH, servername)
+	url := fmt.Sprintf("%v%v/servers/%v", s.Environment.ServerUrl, MONITOR_PATH, servername)
 	w, err := requestAndUnmarshal(url, s.Environment)
 	if err != nil {
 		return nil, err
