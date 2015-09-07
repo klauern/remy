@@ -15,7 +15,14 @@ func Servers(cmd *cobra.Command, args []string) {
 
 func Clusters(cmd *cobra.Command, args []string) {
 	fmt.Printf("Args passed to Clusters: %v\n", args)
+}
 
+func DataSources(cmd *cobra.Command, args []string) {
+	fmt.Printf("Args passed to DataSources: %v\n", args)
+}
+
+func Applications(cmd *cobra.Command, args []string) {
+	fmt.Printf("Args passed to Applications: %v\n", args)
 }
 
 // Configure default credentials to use when making REST queries to an AdminServer
