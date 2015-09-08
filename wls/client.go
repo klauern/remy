@@ -12,9 +12,13 @@ import (
 // http(s)://host:port/management/tenant-monitoring/path
 
 const (
+	// path from the root / that points to where the RESTful Management API endpoint is located.  As of WLS 12.1.2,
+	// this is assumed to be /management/tenant-monitoring
 	MONITOR_PATH string = "/management/tenant-monitoring"
 )
 
+// Environment provides the configurable details necessary to request resources from a particular server.
+// ServerUrl format should be similar to the following: "http(s)://[serverhost]:[adminport]"
 type Environment struct {
 	ServerUrl string
 	Username  string
@@ -59,6 +63,7 @@ func requestAndUnmarshal(url string, e Environment) (*Wrapper, error) {
 	}
 }
 
+// Wrapper function for requestResource(), handling HTTP response codes before unmarshalling responses.
 func request(url string, e Environment) (*http.Response, error) {
 	resp, err := requestResource(url, e)
 	if err != nil {
@@ -70,6 +75,7 @@ func request(url string, e Environment) (*http.Response, error) {
 	return nil, fmt.Errorf("Invalid Response Code: %v\nResponse: %v", resp.StatusCode, resp.Body)
 }
 
+// Take the raw response from the server and attempt to unmarshal it into the Wrapper type.
 func unmarshalWrapper(data []byte) (*Wrapper, error) {
 	var w Wrapper
 	err := json.Unmarshal(data, &w)
