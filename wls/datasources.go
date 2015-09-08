@@ -69,8 +69,11 @@ type RacInstance struct {
 	NumUnavailable                int    `json:",omitempty"`
 }
 
-func (s *DataSourceService) DataSources() ([]DataSource, error) {
+func (s *DataSourceService) DataSources(full_format bool) ([]DataSource, error) {
 	url := fmt.Sprintf("%v%v/datasources", s.Environment.ServerUrl, MONITOR_PATH)
+	if full_format {
+		url = url + "?format=full"
+	}
 	w, err := requestAndUnmarshal(url, s.Environment)
 	if err != nil {
 		return nil, err

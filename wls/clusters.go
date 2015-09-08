@@ -25,8 +25,11 @@ type Cluster struct {
 	} `json:"servers,omitempty"`
 }
 
-func (s *ClusterService) Clusters() ([]Cluster, error) {
+func (s *ClusterService) Clusters(full_format bool) ([]Cluster, error) {
 	url := fmt.Sprintf("%v%v/clusters", s.Environment.ServerUrl, MONITOR_PATH)
+	if full_format {
+		url = url + "?format=full"
+	}
 	w, err := requestAndUnmarshal(url, s.Environment)
 	if err != nil {
 		return nil, err

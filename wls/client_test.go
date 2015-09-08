@@ -59,7 +59,7 @@ func TestServerResourceRelatedCalls(t *testing.T) {
 	service.Environment.ServerUrl = ts.URL
 	service.Environment.Username = "user"
 	service.Environment.Password = "pass"
-	s, err := service.Servers()
+	s, err := service.Servers(false)
 	if err != nil {
 		t.Fail()
 	}

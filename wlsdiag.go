@@ -7,9 +7,7 @@ import (
 	"github.com/klauern/remy/cli"
 )
 
-// Determined whether to request fully-formatted responses from the REST endpoint.  For single-instance requests, this is always
-// a full format, but for groups (servers, applications, clusters, etc.) the server defaults to a short-form response.
-var FullFormat bool
+
 
 func main() {
 
@@ -67,7 +65,7 @@ func main() {
 
 	// Add option to pass --full-format for all responses.  Single server, application, etc., requests will always return
 	// full responses, but group-related queries will return shortened versions
-	WlsRestCmd.PersistentFlags().BoolVarP(&FullFormat, "full-format", "f", false, "Return full format from REST server")
+	WlsRestCmd.PersistentFlags().BoolVarP(&cli.FullFormat, "full-format", "f", false, "Return full format from REST server")
 
 	WlsRestCmd.AddCommand(applicationsCmd, configureCmd, clustersCmd, datasourcesCmd, serversCmd)
 	WlsRestCmd.Execute()

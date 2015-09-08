@@ -8,6 +8,10 @@ import (
 	"os/user"
 )
 
+// Determined whether to request fully-formatted responses from the REST endpoint.  For single-instance requests, this is always
+// a full format, but for groups (servers, applications, clusters, etc.) the server defaults to a short-form response.
+var FullFormat bool
+
 func WlsRestCmd(cmd *cobra.Command, args []string) {
 	fmt.Printf("Args passed to WlsRestCmd: %v\n", args)
 }

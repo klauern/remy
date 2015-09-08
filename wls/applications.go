@@ -73,6 +73,9 @@ type RequestClass struct {
 
 func (s *ApplicationService) Applications(full_format bool) ([]Application, error) {
 	url := fmt.Sprintf("%v%v/applications", s.Environment.ServerUrl, MONITOR_PATH)
+	if full_format {
+		url = url + "?format=full"
+	}
 	w, err := requestAndUnmarshal(url, s.Environment)
 	if err != nil {
 		return nil, err
