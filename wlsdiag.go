@@ -4,7 +4,7 @@ import (
 	//	"github.com/klauern/wlsrest/wls"
 	"github.com/spf13/cobra"
 	//	"fmt"
-	"github.com/klauern/wlsrest/cli"
+	"github.com/klauern/remy/cli"
 )
 
 // Determined whether to request fully-formatted responses from the REST endpoint.  For single-instance requests, this is always

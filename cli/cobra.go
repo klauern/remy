@@ -2,10 +2,10 @@ package cli
 
 import (
 	"fmt"
+	"github.com/klauern/remy/wls"
 	"github.com/spf13/cobra"
 	"os"
 	"os/user"
-	"github.com/klauern/wlsrest/wls"
 )
 
 func WlsRestCmd(cmd *cobra.Command, args []string) {
@@ -28,7 +28,7 @@ func Applications(cmd *cobra.Command, args []string) {
 	fmt.Printf("Args passed to Applications: %v\n", args)
 }
 
-// Configure default credentials to use when making REST queries to an AdminServer
+// Generate a configuration file to store default credentials to use when making REST queries to an AdminServer
 func Configure(cmd *cobra.Command, args []string) {
 	cfg, err := findConfiguration()
 	if err != nil {
