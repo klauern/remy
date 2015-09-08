@@ -198,6 +198,7 @@
       <root url="file://$PROJECT_DIR$/../../../gopkg.in/yaml.v2/.git" />
       <root url="file://$PROJECT_DIR$/../../dsymonds/fixhub/testdata" />
       <root url="file://$PROJECT_DIR$/../../dsymonds/fixhub/.git" />
+      <root url="file://$PROJECT_DIR$/../../aws/aws-sdk-go/.git" />
       <root url="file://$PROJECT_DIR$/../../spf13/hugo/docs/layouts/_default" />
       <root url="file://$PROJECT_DIR$/../../Unknwon/bra/.git" />
       <root url="file://$PROJECT_DIR$/../../../golang.org/x/tools/go/pointer/testdata" />
