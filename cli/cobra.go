@@ -4,11 +4,9 @@ import (
 	"fmt"
 	"github.com/klauern/remy/wls"
 	"github.com/spf13/cobra"
-//	"os"
-//	"os/user"
 	"github.com/spf13/viper"
-"os/user"
 	"os"
+	"os/user"
 )
 
 const (
