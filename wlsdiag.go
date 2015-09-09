@@ -5,11 +5,15 @@ import (
 	"github.com/spf13/cobra"
 	//	"fmt"
 	"github.com/klauern/remy/cli"
+	"github.com/klauern/remy/wls"
+	"github.com/spf13/viper"
 )
 
 
 
 func main() {
+
+	var config wls.WlsAdminServer
 
 	// Base command for the application.
 	var WlsRestCmd = &cobra.Command{
@@ -66,6 +70,13 @@ func main() {
 	// Add option to pass --full-format for all responses.  Single server, application, etc., requests will always return
 	// full responses, but group-related queries will return shortened versions
 	WlsRestCmd.PersistentFlags().BoolVarP(&cli.FullFormat, "full-format", "f", false, "Return full format from REST server")
+
+	WlsRestCmd.PersistentFlags().StringVarP(&config.ServerUrl, "server", "s", "http://localhost:8001", "Url for the Admin Server")
+	WlsRestCmd.PersistentFlags().StringVarP(&config.Username, "username", "u", "weblogic", "Username with privileges to access AdminServer")
+	WlsRestCmd.PersistentFlags().StringVarP(&config.Password, "password", "p", "welcome1", "Password for the user")
+
+	viper.BindPFlags(WlsRestCmd.PersistentFlags())
+
 
 	WlsRestCmd.AddCommand(applicationsCmd, configureCmd, clustersCmd, datasourcesCmd, serversCmd)
 	WlsRestCmd.Execute()
