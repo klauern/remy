@@ -25,7 +25,17 @@ func Servers(cmd *cobra.Command, args []string) {
 	if err != nil {
 		panic(fmt.Sprintf("No configuration found.  Please call 'help config' to find out how to set this"))
 	}
-	if len(args) > 1 {
+	if len(args) > 2 {
+		panic(fmt.Sprintf("Too many arguments.  enter 'help servers' command to find out how to call this"))
+	}
+	if len(args) == 1 {
+		server, err := env.Server(args[0])
+		if err != nil {
+			panic(fmt.Sprintf("Unable to get Servers: %v", err))
+		}
+		fmt.Printf("Server %v: %v", args[0], server)
+	}
+	if len(args) == 0 {
 		servers, err := env.Servers(FullFormat)
 		if err != nil {
 			panic(fmt.Sprintf("Unable to get Servers: %v", err))
