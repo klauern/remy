@@ -3,13 +3,7 @@ package wls
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 )
-
-type ApplicationService struct {
-	client      *http.Client
-	Environment Environment
-}
 
 type Application struct {
 	Name                  string
@@ -71,12 +65,12 @@ type RequestClass struct {
 	VirtualTimeIncrement int
 }
 
-func (s *ApplicationService) Applications(full_format bool) ([]Application, error) {
-	url := fmt.Sprintf("%v%v/applications", s.Environment.ServerUrl, MONITOR_PATH)
+func (s *WlsAdminServer) Applications(full_format bool) ([]Application, error) {
+	url := fmt.Sprintf("%v%v/applications", s.ServerUrl, MONITOR_PATH)
 	if full_format {
 		url = url + "?format=full"
 	}
-	w, err := requestAndUnmarshal(url, s.Environment)
+	w, err := requestAndUnmarshal(url, s)
 	if err != nil {
 		return nil, err
 	}
@@ -87,9 +81,9 @@ func (s *ApplicationService) Applications(full_format bool) ([]Application, erro
 	return applications, nil
 }
 
-func (s *ApplicationService) Application(app string) (*Application, error) {
-	url := fmt.Sprintf("%v%v/applications/%v", s.Environment.ServerUrl, MONITOR_PATH, app)
-	w, err := requestAndUnmarshal(url, s.Environment)
+func (s *WlsAdminServer) Application(app string) (*Application, error) {
+	url := fmt.Sprintf("%v%v/applications/%v", s.ServerUrl, MONITOR_PATH, app)
+	w, err := requestAndUnmarshal(url, s)
 	if err != nil {
 		return nil, err
 	}

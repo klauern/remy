@@ -18,7 +18,7 @@ func TestClientAuthenticatedCalls(t *testing.T) {
 	defer ts.Close()
 	t.Log(ts.URL)
 	requestResource(ts.URL,
-		Environment{ServerUrl: ts.URL, Username: "user", Password: "pass"})
+		WlsAdminServer{ServerUrl: ts.URL, Username: "user", Password: "pass"})
 }
 
 func TestAcceptJsonHeaderCall(t *testing.T) {
@@ -30,7 +30,7 @@ func TestAcceptJsonHeaderCall(t *testing.T) {
 	defer ts.Close()
 	t.Log(ts.URL)
 
-	requestResource(ts.URL, Environment{ServerUrl: ts.URL, Username: "user", Password: "pass"})
+	requestResource(ts.URL, WlsAdminServer{ServerUrl: ts.URL, Username: "user", Password: "pass"})
 }
 
 func CreateTestServerResourceRouters() *mux.Router {

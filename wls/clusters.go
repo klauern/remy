@@ -3,13 +3,7 @@ package wls
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 )
-
-type ClusterService struct {
-	client      *http.Client
-	Environment Environment
-}
 
 type Cluster struct {
 	Name    string
@@ -25,12 +19,12 @@ type Cluster struct {
 	} `json:"servers,omitempty"`
 }
 
-func (s *ClusterService) Clusters(full_format bool) ([]Cluster, error) {
-	url := fmt.Sprintf("%v%v/clusters", s.Environment.ServerUrl, MONITOR_PATH)
+func (s *WlsAdminServer) Clusters(full_format bool) ([]Cluster, error) {
+	url := fmt.Sprintf("%v%v/clusters", s.ServerUrl, MONITOR_PATH)
 	if full_format {
 		url = url + "?format=full"
 	}
-	w, err := requestAndUnmarshal(url, s.Environment)
+	w, err := requestAndUnmarshal(url, s)
 	if err != nil {
 		return nil, err
 	}
@@ -41,9 +35,9 @@ func (s *ClusterService) Clusters(full_format bool) ([]Cluster, error) {
 	return clusters, nil
 }
 
-func (s *ClusterService) Cluster(clustername string) (*Cluster, error) {
-	url := fmt.Sprintf("%v%v/clusters/%v", s.Environment.ServerUrl, MONITOR_PATH, clustername)
-	w, err := requestAndUnmarshal(url, s.Environment)
+func (s *WlsAdminServer) Cluster(clustername string) (*Cluster, error) {
+	url := fmt.Sprintf("%v%v/clusters/%v", s.ServerUrl, MONITOR_PATH, clustername)
+	w, err := requestAndUnmarshal(url, s)
 	if err != nil {
 		return nil, err
 	}

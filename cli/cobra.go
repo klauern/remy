@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"github.com/klauern/remy/wls"
 	"github.com/spf13/cobra"
-	"os"
-	"os/user"
+//	"os"
+//	"os/user"
 )
 
 // Determined whether to request fully-formatted responses from the REST endpoint.  For single-instance requests, this is always

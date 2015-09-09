@@ -3,13 +3,7 @@ package wls
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 )
-
-type ServerService struct {
-	client      *http.Client
-	Environment Environment
-}
 
 type Server struct {
 	Name                    string  `json:"name"`
@@ -27,12 +21,12 @@ type Server struct {
 	JvmProcessorLoad        float64 `json:",omitempty"`
 }
 
-func (s *ServerService) Servers(full_format bool) ([]Server, error) {
-	url := fmt.Sprintf("%v%v/servers", s.Environment.ServerUrl, MONITOR_PATH)
+func (s *WlsAdminServer) Servers(full_format bool) ([]Server, error) {
+	url := fmt.Sprintf("%v%v/servers", s.ServerUrl, MONITOR_PATH)
 	if full_format {
 		url = url + "?format=full"
 	}
-	w, err := requestAndUnmarshal(url, s.Environment)
+	w, err := requestAndUnmarshal(url, s)
 	if err != nil {
 		return nil, err
 	}
@@ -43,9 +37,9 @@ func (s *ServerService) Servers(full_format bool) ([]Server, error) {
 	return servers, nil
 }
 
-func (s *ServerService) Server(servername string) (*Server, error) {
-	url := fmt.Sprintf("%v%v/servers/%v", s.Environment.ServerUrl, MONITOR_PATH, servername)
-	w, err := requestAndUnmarshal(url, s.Environment)
+func (s *WlsAdminServer) Server(servername string) (*Server, error) {
+	url := fmt.Sprintf("%v%v/servers/%v", s.ServerUrl, MONITOR_PATH, servername)
+	w, err := requestAndUnmarshal(url, s)
 	if err != nil {
 		return nil, err
 	}

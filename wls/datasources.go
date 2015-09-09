@@ -3,13 +3,7 @@ package wls
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 )
-
-type DataSourceService struct {
-	client      *http.Client
-	Environment Environment
-}
 
 type DataSource struct {
 	Name      string
@@ -69,12 +63,12 @@ type RacInstance struct {
 	NumUnavailable                int    `json:",omitempty"`
 }
 
-func (s *DataSourceService) DataSources(full_format bool) ([]DataSource, error) {
-	url := fmt.Sprintf("%v%v/datasources", s.Environment.ServerUrl, MONITOR_PATH)
+func (s *WlsAdminServer) DataSources(full_format bool) ([]DataSource, error) {
+	url := fmt.Sprintf("%v%v/datasources", s.ServerUrl, MONITOR_PATH)
 	if full_format {
 		url = url + "?format=full"
 	}
-	w, err := requestAndUnmarshal(url, s.Environment)
+	w, err := requestAndUnmarshal(url, s)
 	if err != nil {
 		return nil, err
 	}
@@ -85,9 +79,9 @@ func (s *DataSourceService) DataSources(full_format bool) ([]DataSource, error) 
 	return datasources, nil
 }
 
-func (s *DataSourceService) DataSource(datasource_name string) (*DataSource, error) {
-	url := fmt.Sprintf("%v%v/datasources/%v", s.Environment.ServerUrl, MONITOR_PATH, datasource_name)
-	w, err := requestAndUnmarshal(url, s.Environment)
+func (s *WlsAdminServer) DataSource(datasource_name string) (*DataSource, error) {
+	url := fmt.Sprintf("%v%v/datasources/%v", s.ServerUrl, MONITOR_PATH, datasource_name)
+	w, err := requestAndUnmarshal(url, s)
 	if err != nil {
 		return nil, err
 	}

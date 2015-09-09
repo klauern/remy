@@ -19,7 +19,7 @@ const (
 
 // Environment provides the configurable details necessary to request resources from a particular server.
 // ServerUrl format should be similar to the following: "http(s)://[serverhost]:[adminport]"
-type Environment struct {
+type WlsAdminServer struct {
 	ServerUrl string
 	Username  string
 	Password  string
@@ -40,7 +40,7 @@ type Wrapper struct {
 	Messages []string `json:"messages,omitempty"`
 }
 
-func requestResource(url string, e Environment) (*http.Response, error) {
+func requestResource(url string, e *WlsAdminServer) (*http.Response, error) {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func requestResource(url string, e Environment) (*http.Response, error) {
 	return client.Do(req)
 }
 
-func requestAndUnmarshal(url string, e Environment) (*Wrapper, error) {
+func requestAndUnmarshal(url string, e *WlsAdminServer) (*Wrapper, error) {
 	if resp, err := request(url, e); err != nil {
 		return nil, err
 	} else {
@@ -64,7 +64,7 @@ func requestAndUnmarshal(url string, e Environment) (*Wrapper, error) {
 }
 
 // Wrapper function for requestResource(), handling HTTP response codes before unmarshalling responses.
-func request(url string, e Environment) (*http.Response, error) {
+func request(url string, e *WlsAdminServer) (*http.Response, error) {
 	resp, err := requestResource(url, e)
 	if err != nil {
 		return nil, err
