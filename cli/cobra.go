@@ -10,7 +10,11 @@ import (
 )
 
 const (
-	CONFIG_FILE = "wlsrest"
+	CONFIG_FILE     = "wlsrest"
+	ADMINURL_FLAG   = "adminurl"
+	PASSWORD_FLAG   = "password"
+	USERNAME_FLAG   = "username"
+	FULLFORMAT_FLAG = "full-format"
 )
 
 // Determined whether to request fully-formatted responses from the REST endpoint.  For single-instance requests, this is always
@@ -18,7 +22,7 @@ const (
 var FullFormat bool
 
 func Servers(cmd *cobra.Command, args []string) {
-	fmt.Printf("Args passed to Servers: %v\n", args)
+	//	fmt.Printf("Args passed to Servers: %v\n", args)
 	env, err := findConfiguration()
 	if err != nil {
 		panic(fmt.Sprintf("No configuration found.  Please call 'help config' to find out how to set this"))
@@ -34,6 +38,8 @@ func Servers(cmd *cobra.Command, args []string) {
 		fmt.Printf("Server %v: %v", args[0], server)
 	}
 	if len(args) == 0 {
+		fmt.Printf("Full Format? %+v", FullFormat)
+		fmt.Printf("Environment: %+v", env)
 		servers, err := env.Servers(FullFormat)
 		if err != nil {
 			panic(fmt.Sprintf("Unable to get Servers: %v", err))
@@ -44,14 +50,80 @@ func Servers(cmd *cobra.Command, args []string) {
 
 func Clusters(cmd *cobra.Command, args []string) {
 	fmt.Printf("Args passed to Clusters: %v\n", args)
+	env, err := findConfiguration()
+	if err != nil {
+		panic(fmt.Sprintf("No configuration found.  Please call 'help config' to find out how to set this"))
+	}
+	if len(args) > 2 {
+		panic(fmt.Sprintf("Too many arguments.  enter 'help clusters' command to find out how to call this"))
+	}
+	if len(args) == 1 {
+		server, err := env.Cluster(args[0])
+		if err != nil {
+			panic(fmt.Sprintf("Unable to get Clusters: %v", err))
+		}
+		fmt.Printf("Cluster %v: %v", args[0], server)
+	}
+	if len(args) == 0 {
+		fmt.Printf("Environment: %+v", env)
+		clusters, err := env.Clusters(FullFormat)
+		if err != nil {
+			panic(fmt.Sprintf("Unable to get Clusters: %v", err))
+		}
+		fmt.Printf("Clusters:\n%+v", clusters)
+	}
 }
 
 func DataSources(cmd *cobra.Command, args []string) {
 	fmt.Printf("Args passed to DataSources: %v\n", args)
+	env, err := findConfiguration()
+	if err != nil {
+		panic(fmt.Sprintf("No configuration found.  Please call 'help config' to find out how to set this"))
+	}
+	if len(args) > 2 {
+		panic(fmt.Sprintf("Too many arguments.  enter 'help datasources' command to find out how to call this"))
+	}
+	if len(args) == 1 {
+		datasource, err := env.DataSource(args[0])
+		if err != nil {
+			panic(fmt.Sprintf("Unable to get Datasource: %v", err))
+		}
+		fmt.Printf("Datasource %v: %v", args[0], datasource)
+	}
+	if len(args) == 0 {
+		fmt.Printf("Environment: %+v", env)
+		datasources, err := env.DataSources(FullFormat)
+		if err != nil {
+			panic(fmt.Sprintf("Unable to get Datasources: %v", err))
+		}
+		fmt.Printf("Datasources:\n%+v", datasources)
+	}
 }
 
 func Applications(cmd *cobra.Command, args []string) {
 	fmt.Printf("Args passed to Applications: %v\n", args)
+	env, err := findConfiguration()
+	if err != nil {
+		panic(fmt.Sprintf("No configuration found.  Please call 'help config' to find out how to set this"))
+	}
+	if len(args) > 2 {
+		panic(fmt.Sprintf("Too many arguments.  enter 'help applications' command to find out how to call this"))
+	}
+	if len(args) == 1 {
+		application, err := env.Application(args[0])
+		if err != nil {
+			panic(fmt.Sprintf("Unable to get Application: %v", err))
+		}
+		fmt.Printf("Application %v: %v", args[0], application)
+	}
+	if len(args) == 0 {
+		fmt.Printf("Environment: %+v", env)
+		applications, err := env.Applications(FullFormat)
+		if err != nil {
+			panic(fmt.Sprintf("Unable to get Applications: %v", err))
+		}
+		fmt.Printf("Applications:\n%+v", applications)
+	}
 }
 
 // Generate a configuration file to store default credentials to use when making REST queries to an AdminServer
@@ -60,7 +132,7 @@ func Configure(cmd *cobra.Command, args []string) {
 	if err != nil {
 		fmt.Printf("Error found: %v", err)
 	}
-	fmt.Printf("Current Working Directory: %v", cfg.ServerUrl)
+	fmt.Printf("Current Working Directory: %v", cfg.AdminUrl)
 }
 
 // Finds a configuration setting for your login.  Looks for the following configuration file, processed in the following
@@ -73,10 +145,10 @@ func Configure(cmd *cobra.Command, args []string) {
 // This is borrowed lovingly from Ansible's similar setup for it's configuration (http://docs.ansible.com/ansible/intro_configuration.html)
 func findConfiguration() (*wls.WlsAdminServer, error) {
 	viper.AutomaticEnv()
-	viper.SetEnvPrefix("WLS_")
-	viper.BindEnv("USERNAME")
-	viper.BindEnv("PASSWORD")
-	viper.BindEnv("HOSTPORT")
+	viper.SetEnvPrefix("WLS")
+	viper.BindEnv(USERNAME_FLAG)
+	viper.BindEnv(PASSWORD_FLAG)
+	viper.BindEnv(ADMINURL_FLAG)
 	viper.SetConfigType("toml")
 	viper.SetConfigName(CONFIG_FILE)
 	u, err := user.Current()
@@ -89,5 +161,19 @@ func findConfiguration() (*wls.WlsAdminServer, error) {
 		return nil, err
 	}
 	viper.AddConfigPath(cwd)
-	return &wls.WlsAdminServer{"", "", ""}, nil
+
+	server := &wls.WlsAdminServer{}
+	if viper.IsSet(USERNAME_FLAG) {
+		server.Username = viper.GetString(USERNAME_FLAG)
+	}
+	if viper.IsSet(PASSWORD_FLAG) {
+		server.Password = viper.GetString(PASSWORD_FLAG)
+	}
+	if viper.IsSet(ADMINURL_FLAG) {
+		server.AdminUrl = viper.GetString(ADMINURL_FLAG)
+	}
+
+	//	viper.Debug()
+
+	return server, nil
 }

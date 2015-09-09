@@ -20,9 +20,9 @@ const (
 // Environment provides the configurable details necessary to request resources from a particular server.
 // ServerUrl format should be similar to the following: "http(s)://[serverhost]:[adminport]"
 type WlsAdminServer struct {
-	ServerUrl string
-	Username  string
-	Password  string
+	AdminUrl string
+	Username string
+	Password string
 }
 
 // All requests sent to a WLS Rest endpoint are wrapped by a similar body and item or items tag.

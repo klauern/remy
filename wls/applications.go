@@ -66,7 +66,7 @@ type RequestClass struct {
 }
 
 func (s *WlsAdminServer) Applications(full_format bool) ([]Application, error) {
-	url := fmt.Sprintf("%v%v/applications", s.ServerUrl, MONITOR_PATH)
+	url := fmt.Sprintf("%v%v/applications", s.AdminUrl, MONITOR_PATH)
 	if full_format {
 		url = url + "?format=full"
 	}
@@ -82,7 +82,7 @@ func (s *WlsAdminServer) Applications(full_format bool) ([]Application, error) {
 }
 
 func (s *WlsAdminServer) Application(app string) (*Application, error) {
-	url := fmt.Sprintf("%v%v/applications/%v", s.ServerUrl, MONITOR_PATH, app)
+	url := fmt.Sprintf("%v%v/applications/%v", s.AdminUrl, MONITOR_PATH, app)
 	w, err := requestAndUnmarshal(url, s)
 	if err != nil {
 		return nil, err

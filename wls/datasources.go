@@ -64,7 +64,7 @@ type RacInstance struct {
 }
 
 func (s *WlsAdminServer) DataSources(full_format bool) ([]DataSource, error) {
-	url := fmt.Sprintf("%v%v/datasources", s.ServerUrl, MONITOR_PATH)
+	url := fmt.Sprintf("%v%v/datasources", s.AdminUrl, MONITOR_PATH)
 	if full_format {
 		url = url + "?format=full"
 	}
@@ -80,7 +80,7 @@ func (s *WlsAdminServer) DataSources(full_format bool) ([]DataSource, error) {
 }
 
 func (s *WlsAdminServer) DataSource(datasource_name string) (*DataSource, error) {
-	url := fmt.Sprintf("%v%v/datasources/%v", s.ServerUrl, MONITOR_PATH, datasource_name)
+	url := fmt.Sprintf("%v%v/datasources/%v", s.AdminUrl, MONITOR_PATH, datasource_name)
 	w, err := requestAndUnmarshal(url, s)
 	if err != nil {
 		return nil, err
