@@ -20,7 +20,6 @@ func main() {
 		Use:   "remy",
 		Short: "Query a WebLogic Server's Rest Management Extention-enabled resources",
 		Long:  "Query your underlying server's resources, including Datasources, Applications, Clusters, and Servers by using the WebLogic RESTful Management Extensions API",
-		Run:   cli.WlsRestCmd,
 	}
 
 	// Request the Servers resource, optionally passing a specific [servername] instance to get that particular Server.
@@ -71,8 +70,13 @@ func main() {
 	// full responses, but group-related queries will return shortened versions
 	WlsRestCmd.PersistentFlags().BoolVarP(&cli.FullFormat, "full-format", "f", false, "Return full format from REST server")
 
+	// Allow specific server url to be passed in to override local config files
 	WlsRestCmd.PersistentFlags().StringVarP(&config.ServerUrl, "server", "s", "http://localhost:8001", "Url for the Admin Server")
+
+	// Allow the Username property to be overridden locally on the command-line
 	WlsRestCmd.PersistentFlags().StringVarP(&config.Username, "username", "u", "weblogic", "Username with privileges to access AdminServer")
+
+	// Allow the Password property to be overriden on the command-line
 	WlsRestCmd.PersistentFlags().StringVarP(&config.Password, "password", "p", "welcome1", "Password for the user")
 
 	viper.BindPFlags(WlsRestCmd.PersistentFlags())

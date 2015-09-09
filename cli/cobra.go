@@ -19,11 +19,6 @@ const (
 // a full format, but for groups (servers, applications, clusters, etc.) the server defaults to a short-form response.
 var FullFormat bool
 
-func WlsRestCmd(cmd *cobra.Command, args []string) {
-	fmt.Printf("Args passed to WlsRestCmd: %v\n", args)
-
-}
-
 func Servers(cmd *cobra.Command, args []string) {
 	fmt.Printf("Args passed to Servers: %v\n", args)
 	env, err := findConfiguration()
