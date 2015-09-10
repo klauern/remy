@@ -21,7 +21,7 @@ type Server struct {
 	JvmProcessorLoad        float64 `json:",omitempty"`
 }
 
-func (s *WlsAdminServer) Servers(full_format bool) ([]Server, error) {
+func (s *AdminServer) Servers(full_format bool) ([]Server, error) {
 	url := fmt.Sprintf("%v%v/servers", s.AdminUrl, MONITOR_PATH)
 	if full_format {
 		url = url + "?format=full"
@@ -37,7 +37,7 @@ func (s *WlsAdminServer) Servers(full_format bool) ([]Server, error) {
 	return servers, nil
 }
 
-func (s *WlsAdminServer) Server(servername string) (*Server, error) {
+func (s *AdminServer) Server(servername string) (*Server, error) {
 	url := fmt.Sprintf("%v%v/servers/%v", s.AdminUrl, MONITOR_PATH, servername)
 	w, err := requestAndUnmarshal(url, s)
 	if err != nil {

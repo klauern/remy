@@ -12,14 +12,14 @@ import (
 // http(s)://host:port/management/tenant-monitoring/path
 
 const (
-	// path from the root / that points to where the RESTful Management API endpoint is located.  As of WLS 12.1.2,
+	// MonitorPath is the REST resource path from the root / that points to where the RESTful Management API endpoint is located.  As of WLS 12.1.2,
 	// this is assumed to be /management/tenant-monitoring
-	MONITOR_PATH string = "/management/tenant-monitoring"
+	MonitorPath string = "/management/tenant-monitoring"
 )
 
 // Environment provides the configurable details necessary to request resources from a particular server.
 // ServerUrl format should be similar to the following: "http(s)://[serverhost]:[adminport]"
-type WlsAdminServer struct {
+type AdminServer struct {
 	AdminUrl string
 	Username string
 	Password string
@@ -40,7 +40,7 @@ type Wrapper struct {
 	Messages []string `json:"messages,omitempty"`
 }
 
-func requestResource(url string, e *WlsAdminServer) (*http.Response, error) {
+func requestResource(url string, e *AdminServer) (*http.Response, error) {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
@@ -51,7 +51,7 @@ func requestResource(url string, e *WlsAdminServer) (*http.Response, error) {
 	return client.Do(req)
 }
 
-func requestAndUnmarshal(url string, e *WlsAdminServer) (*Wrapper, error) {
+func requestAndUnmarshal(url string, e *AdminServer) (*Wrapper, error) {
 	if resp, err := request(url, e); err != nil {
 		return nil, err
 	} else {
@@ -64,7 +64,7 @@ func requestAndUnmarshal(url string, e *WlsAdminServer) (*Wrapper, error) {
 }
 
 // Wrapper function for requestResource(), handling HTTP response codes before unmarshalling responses.
-func request(url string, e *WlsAdminServer) (*http.Response, error) {
+func request(url string, e *AdminServer) (*http.Response, error) {
 	resp, err := requestResource(url, e)
 	if err != nil {
 		return nil, err

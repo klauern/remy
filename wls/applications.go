@@ -65,9 +65,9 @@ type RequestClass struct {
 	VirtualTimeIncrement int
 }
 
-func (s *WlsAdminServer) Applications(full_format bool) ([]Application, error) {
-	url := fmt.Sprintf("%v%v/applications", s.AdminUrl, MONITOR_PATH)
-	if full_format {
+func (s *AdminServer) Applications(fullFormat bool) ([]Application, error) {
+	url := fmt.Sprintf("%v%v/applications", s.AdminUrl, MonitorPath)
+	if fullFormat {
 		url = url + "?format=full"
 	}
 	w, err := requestAndUnmarshal(url, s)
@@ -81,8 +81,8 @@ func (s *WlsAdminServer) Applications(full_format bool) ([]Application, error) {
 	return applications, nil
 }
 
-func (s *WlsAdminServer) Application(app string) (*Application, error) {
-	url := fmt.Sprintf("%v%v/applications/%v", s.AdminUrl, MONITOR_PATH, app)
+func (s *AdminServer) Application(app string) (*Application, error) {
+	url := fmt.Sprintf("%v%v/applications/%v", s.AdminUrl, MonitorPath, app)
 	w, err := requestAndUnmarshal(url, s)
 	if err != nil {
 		return nil, err

@@ -18,7 +18,7 @@ func TestClientAuthenticatedCalls(t *testing.T) {
 	defer ts.Close()
 	t.Log(ts.URL)
 	requestResource(ts.URL,
-		&WlsAdminServer{AdminUrl: ts.URL, Username: "user", Password: "pass"})
+		&AdminServer{AdminUrl: ts.URL, Username: "user", Password: "pass"})
 }
 
 func TestAcceptJsonHeaderCall(t *testing.T) {
@@ -30,7 +30,7 @@ func TestAcceptJsonHeaderCall(t *testing.T) {
 	defer ts.Close()
 	t.Log(ts.URL)
 
-	requestResource(ts.URL, &WlsAdminServer{AdminUrl: ts.URL, Username: "user", Password: "pass"})
+	requestResource(ts.URL, &AdminServer{AdminUrl: ts.URL, Username: "user", Password: "pass"})
 }
 
 func CreateTestServerResourceRouters() *mux.Router {
@@ -45,7 +45,7 @@ func CreateTestServerResourceRouters() *mux.Router {
 			w.WriteHeader(http.StatusBadRequest)
 			w.Write([]byte("No servername by that name"))
 		} else {
-			w.Write([]byte(single_server))
+			w.Write([]byte(singleServer))
 		}
 	})
 	return r
@@ -54,7 +54,7 @@ func CreateTestServerResourceRouters() *mux.Router {
 func TestServerResourceRelatedCalls(t *testing.T) {
 	ts := httptest.NewServer(CreateTestServerResourceRouters())
 	defer ts.Close()
-	service := new(WlsAdminServer)
+	service := new(AdminServer)
 
 	service.AdminUrl = ts.URL
 	service.Username = "user"
@@ -71,7 +71,7 @@ func TestServerResourceRelatedCalls(t *testing.T) {
 	if err != nil {
 		t.Fail()
 	}
-	var server_json_tests = []struct {
+	var serverJsonTests = []struct {
 		in  string
 		out string
 	}{
@@ -90,7 +90,7 @@ func TestServerResourceRelatedCalls(t *testing.T) {
 		{fmt.Sprint(server.JvmProcessorLoad), "0.25"},
 	}
 
-	for _, tt := range server_json_tests {
+	for _, tt := range serverJsonTests {
 		if tt.in != tt.out {
 			t.Errorf("want %q, got %q", tt.out, tt.in)
 		}

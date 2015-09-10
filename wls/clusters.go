@@ -19,9 +19,9 @@ type Cluster struct {
 	} `json:"servers,omitempty"`
 }
 
-func (s *WlsAdminServer) Clusters(full_format bool) ([]Cluster, error) {
-	url := fmt.Sprintf("%v%v/clusters", s.AdminUrl, MONITOR_PATH)
-	if full_format {
+func (s *AdminServer) Clusters(fullFormat bool) ([]Cluster, error) {
+	url := fmt.Sprintf("%v%v/clusters", s.AdminUrl, MonitorPath)
+	if fullFormat {
 		url = url + "?format=full"
 	}
 	w, err := requestAndUnmarshal(url, s)
@@ -35,8 +35,8 @@ func (s *WlsAdminServer) Clusters(full_format bool) ([]Cluster, error) {
 	return clusters, nil
 }
 
-func (s *WlsAdminServer) Cluster(clustername string) (*Cluster, error) {
-	url := fmt.Sprintf("%v%v/clusters/%v", s.AdminUrl, MONITOR_PATH, clustername)
+func (s *AdminServer) Cluster(clustername string) (*Cluster, error) {
+	url := fmt.Sprintf("%v%v/clusters/%v", s.AdminUrl, MonitorPath, clustername)
 	w, err := requestAndUnmarshal(url, s)
 	if err != nil {
 		return nil, err

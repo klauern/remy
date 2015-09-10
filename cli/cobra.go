@@ -10,14 +10,23 @@ import (
 )
 
 const (
-	CONFIG_FILE     = "wlsrest"
-	ADMINURL_FLAG   = "adminurl"
-	PASSWORD_FLAG   = "password"
-	USERNAME_FLAG   = "username"
-	FULLFORMAT_FLAG = "full-format"
+	// ConfigFile is the base file prefix for looking for configuration files.  wlsrest.cfg, .wlsrest.cfg are all valid filenames
+	ConfigFile = "wlsrest"
+
+	// AdminURLFlag is the flag for specifying/overriding the Administration Server url (http://localhost:7001)
+	AdminURLFlag = "adminurl"
+
+	// PasswordFlag is the flag for specifying/overriding the Password to log in to the AdminServer
+	PasswordFlag = "password"
+
+	// UsernameFlag is the flag for specifying/overriding the Username to log in to AdminServer with
+	UsernameFlag = "username"
+
+	// FullFormatFlag is the flag to override whether to request the fully-formatted dataset for a resource
+	FullFormatFlag = "full-format"
 )
 
-// Determined whether to request fully-formatted responses from the REST endpoint.  For single-instance requests, this is always
+// FullFormat determines whether to request fully-formatted responses from the REST endpoint.  For single-instance requests, this is always
 // a full format, but for groups (servers, applications, clusters, etc.) the server defaults to a short-form response.
 var FullFormat bool
 
@@ -162,15 +171,15 @@ func findConfiguration() (*wls.WlsAdminServer, error) {
 	}
 	viper.AddConfigPath(cwd)
 
-	server := &wls.WlsAdminServer{}
-	if viper.IsSet(USERNAME_FLAG) {
-		server.Username = viper.GetString(USERNAME_FLAG)
+	server := &wls.AdminServer{}
+	if viper.IsSet(UsernameFlag) {
+		server.Username = viper.GetString(UsernameFlag)
 	}
-	if viper.IsSet(PASSWORD_FLAG) {
-		server.Password = viper.GetString(PASSWORD_FLAG)
+	if viper.IsSet(PasswordFlag) {
+		server.Password = viper.GetString(PasswordFlag)
 	}
-	if viper.IsSet(ADMINURL_FLAG) {
-		server.AdminUrl = viper.GetString(ADMINURL_FLAG)
+	if viper.IsSet(AdminURLFlag) {
+		server.AdminUrl = viper.GetString(AdminURLFlag)
 	}
 
 	//	viper.Debug()

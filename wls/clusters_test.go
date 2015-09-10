@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-var single_cluster = `{
+var singleCluster = `{
     "body": {
         "item": {
             "name": "mycluster1",
@@ -33,7 +33,7 @@ var single_cluster = `{
 }`
 
 func TestUnmarshalSingleCluster(t *testing.T) {
-	wrapper, err := unmarshalWrapper([]byte(single_cluster))
+	wrapper, err := unmarshalWrapper([]byte(singleCluster))
 	if err != nil {
 		t.Error(err)
 	}
@@ -44,7 +44,7 @@ func TestUnmarshalSingleCluster(t *testing.T) {
 	if len(cluster.Servers) == 0 {
 		t.Errorf("Servers in wrapper.Body.Item is 0, should be 2")
 	}
-	var servers_json_tests = []struct {
+	var serversJSONTests = []struct {
 		in  string
 		out string
 	}{
@@ -63,7 +63,7 @@ func TestUnmarshalSingleCluster(t *testing.T) {
 		{fmt.Sprint(cluster.Servers[1].DropOutFrequency), ""},
 	}
 
-	for _, tt := range servers_json_tests {
+	for _, tt := range serversJSONTests {
 		if tt.in != tt.out {
 			t.Errorf("want %q, got %q", tt.out, tt.in)
 		}
@@ -105,7 +105,7 @@ func TestUnmarshalMultipleClusters(t *testing.T) {
 	if len(clusters) == 0 {
 		t.Errorf("Clusters count should be 1, was 0")
 	}
-	var servers_json_tests = []struct {
+	var serversJSONTests = []struct {
 		in  string
 		out string
 	}{
@@ -118,7 +118,7 @@ func TestUnmarshalMultipleClusters(t *testing.T) {
 		{clusters[0].Servers[1].Health, "HEALTH_OVERLOADED"},
 	}
 
-	for _, tt := range servers_json_tests {
+	for _, tt := range serversJSONTests {
 		if tt.in != tt.out {
 			t.Errorf("want %q, got %q", tt.out, tt.in)
 		}

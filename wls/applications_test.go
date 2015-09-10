@@ -38,7 +38,7 @@ func TestUnmarshalMultipleApplications(t *testing.T) {
 	if len(applications) == 0 {
 		t.Errorf("Applications count should be 2, was 0")
 	}
-	var applications_json_tests = []struct {
+	var applicationsJSONTests = []struct {
 		in  string
 		out string
 	}{
@@ -51,7 +51,7 @@ func TestUnmarshalMultipleApplications(t *testing.T) {
 		{applications[1].State, "STATE_NEW"},
 	}
 
-	for _, tt := range applications_json_tests {
+	for _, tt := range applicationsJSONTests {
 		if tt.in != tt.out {
 			t.Errorf("want %q, got %q", tt.out, tt.in)
 		}
@@ -138,7 +138,7 @@ func TestUnmarshalApplication(t *testing.T) {
 	t.Log(application.MinThreadsConstraints[0])
 	//	t.Log(application.MaxThreadsConstraints[0])
 	t.Log(application.RequestClasses[0])
-	var application_json_tests = []struct {
+	var applicationJSONTests = []struct {
 		in  string
 		out string
 	}{
@@ -176,7 +176,7 @@ func TestUnmarshalApplication(t *testing.T) {
 		{fmt.Sprint(application.RequestClasses[0].VirtualTimeIncrement), "0"},
 	}
 
-	for _, tt := range application_json_tests {
+	for _, tt := range applicationJSONTests {
 		if tt.in != tt.out {
 			t.Errorf("want %q, got %q", tt.out, tt.in)
 		}

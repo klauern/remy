@@ -56,7 +56,7 @@ func TestUnmarshalServersJson(t *testing.T) {
 
 }
 
-var single_server = `{
+var singleServer = `{
   "body": {
     "item": {
       "name": "adminserver",
@@ -84,7 +84,7 @@ var single_server = `{
   }`
 
 func TestUnmarshalSingleServer(t *testing.T) {
-	wrapper, err := unmarshalWrapper([]byte(single_server))
+	wrapper, err := unmarshalWrapper([]byte(singleServer))
 	if err != nil {
 		t.Error(err)
 	}

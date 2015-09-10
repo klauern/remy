@@ -9,7 +9,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-var Config wls.WlsAdminServer
+var Config wls.AdminServer
 
 func main() {
 
@@ -64,16 +64,16 @@ func main() {
 
 	// Add option to pass --full-format for all responses.  Single server, application, etc., requests will always return
 	// full responses, but group-related queries will return shortened versions
-	WlsRestCmd.PersistentFlags().BoolVarP(&cli.FullFormat, cli.FULLFORMAT_FLAG, "f", false, "Return full format from REST server")
+	WlsRestCmd.PersistentFlags().BoolVarP(&cli.FullFormat, cli.FullFormatFlag, "f", false, "Return full format from REST server")
 
 	// Allow specific AdminServer URL to be passed in to override local config files
-	WlsRestCmd.PersistentFlags().StringVarP(&Config.AdminUrl, cli.ADMINURL_FLAG, "s", "http://localhost:7001", "Url for the Admin Server")
+	WlsRestCmd.PersistentFlags().StringVarP(&Config.AdminUrl, cli.AdminURLFlag, "s", "http://localhost:7001", "Url for the Admin Server")
 
 	// Allow the Username property to be overridden locally on the command-line
-	WlsRestCmd.PersistentFlags().StringVarP(&Config.Username, cli.USERNAME_FLAG, "u", "weblogic", "Username with privileges to access AdminServer")
+	WlsRestCmd.PersistentFlags().StringVarP(&Config.Username, cli.UsernameFlag, "u", "weblogic", "Username with privileges to access AdminServer")
 
 	// Allow the Password property to be overridden on the command-line
-	WlsRestCmd.PersistentFlags().StringVarP(&Config.Password, cli.PASSWORD_FLAG, "p", "welcome1", "Password for the user")
+	WlsRestCmd.PersistentFlags().StringVarP(&Config.Password, cli.PasswordFlag, "p", "welcome1", "Password for the user")
 
 	viper.BindPFlags(WlsRestCmd.PersistentFlags())
 
