@@ -68,7 +68,7 @@ func main() {
 	WlsRestCmd.PersistentFlags().BoolVarP(&cli.FullFormat, cli.FullFormatFlag, "f", false, "Return full format from REST server")
 
 	// Allow specific AdminServer URL to be passed in to override local config files
-	WlsRestCmd.PersistentFlags().StringVarP(&Config.AdminUrl, cli.AdminURLFlag, "s", "http://localhost:7001", "Url for the Admin Server")
+	WlsRestCmd.PersistentFlags().StringVarP(&Config.AdminURL, cli.AdminURLFlag, "s", "http://localhost:7001", "Url for the Admin Server")
 
 	// Allow the Username property to be overridden locally on the command-line
 	WlsRestCmd.PersistentFlags().StringVarP(&Config.Username, cli.UsernameFlag, "u", "weblogic", "Username with privileges to access AdminServer")

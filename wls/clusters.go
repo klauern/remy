@@ -20,7 +20,7 @@ type Cluster struct {
 }
 
 func (s *AdminServer) Clusters(fullFormat bool) ([]Cluster, error) {
-	url := fmt.Sprintf("%v%v/clusters", s.AdminUrl, MonitorPath)
+	url := fmt.Sprintf("%v%v/clusters", s.AdminURL, MonitorPath)
 	if fullFormat {
 		url = url + "?format=full"
 	}
@@ -36,7 +36,7 @@ func (s *AdminServer) Clusters(fullFormat bool) ([]Cluster, error) {
 }
 
 func (s *AdminServer) Cluster(clustername string) (*Cluster, error) {
-	url := fmt.Sprintf("%v%v/clusters/%v", s.AdminUrl, MonitorPath, clustername)
+	url := fmt.Sprintf("%v%v/clusters/%v", s.AdminURL, MonitorPath, clustername)
 	w, err := requestAndUnmarshal(url, s)
 	if err != nil {
 		return nil, err

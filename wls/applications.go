@@ -66,7 +66,7 @@ type RequestClass struct {
 }
 
 func (s *AdminServer) Applications(fullFormat bool) ([]Application, error) {
-	url := fmt.Sprintf("%v%v/applications", s.AdminUrl, MonitorPath)
+	url := fmt.Sprintf("%v%v/applications", s.AdminURL, MonitorPath)
 	if fullFormat {
 		url = url + "?format=full"
 	}
@@ -82,7 +82,7 @@ func (s *AdminServer) Applications(fullFormat bool) ([]Application, error) {
 }
 
 func (s *AdminServer) Application(app string) (*Application, error) {
-	url := fmt.Sprintf("%v%v/applications/%v", s.AdminUrl, MonitorPath, app)
+	url := fmt.Sprintf("%v%v/applications/%v", s.AdminURL, MonitorPath, app)
 	w, err := requestAndUnmarshal(url, s)
 	if err != nil {
 		return nil, err

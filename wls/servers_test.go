@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-var servers_json = `{
+var serversJSON = `{
   "body": {
     "items": [
       {
@@ -26,7 +26,7 @@ var servers_json = `{
  }`
 
 func TestUnmarshalServersJson(t *testing.T) {
-	wrapper, err := unmarshalWrapper([]byte(servers_json))
+	wrapper, err := unmarshalWrapper([]byte(serversJSON))
 	if err != nil {
 		t.Error(err)
 	}
@@ -36,7 +36,7 @@ func TestUnmarshalServersJson(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	var servers_json_tests = []struct {
+	var serversJSONTests = []struct {
 		in  string
 		out string
 	}{
@@ -48,7 +48,7 @@ func TestUnmarshalServersJson(t *testing.T) {
 		{servers[1].Health, ""},
 	}
 
-	for _, tt := range servers_json_tests {
+	for _, tt := range serversJSONTests {
 		if tt.in != tt.out {
 			t.Errorf("want %q, got %q", tt.out, tt.in)
 		}
@@ -93,7 +93,7 @@ func TestUnmarshalSingleServer(t *testing.T) {
 		t.Error(err)
 	}
 	//	t.Log(wrapper)
-	var servers_json_tests = []struct {
+	var serversJSONTests = []struct {
 		in  string
 		out string
 	}{
@@ -112,7 +112,7 @@ func TestUnmarshalSingleServer(t *testing.T) {
 		{fmt.Sprint(server.JvmProcessorLoad), "0.25"},
 	}
 
-	for _, tt := range servers_json_tests {
+	for _, tt := range serversJSONTests {
 		if tt.in != tt.out {
 			t.Errorf("want %q, got %q", tt.out, tt.in)
 		}

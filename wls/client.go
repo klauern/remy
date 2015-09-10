@@ -20,12 +20,12 @@ const (
 // AdminServer contains the configurable details necessary to request resources from a particular AdminServer.
 // ServerUrl format should be similar to the following: "http(s)://[serverhost]:[adminport]"
 type AdminServer struct {
-	AdminUrl string
+	AdminURL string
 	Username string
 	Password string
 }
 
-// All requests sent to a WLS Rest endpoint are wrapped by a similar body and item or items tag.
+// Wrapper handles all responses sent back from a WLS Rest endpoint.  These responses are wrapped by a similar body and item or items tag.
 // We simply wrap that so we can get to the meat of it in the underlying Server type
 //
 // Wrapper is composed of 3 pieces:
@@ -52,15 +52,15 @@ func requestResource(url string, e *AdminServer) (*http.Response, error) {
 }
 
 func requestAndUnmarshal(url string, e *AdminServer) (*Wrapper, error) {
-	if resp, err := request(url, e); err != nil {
+	resp, err := request(url, e)
+	if err != nil {
 		return nil, err
-	} else {
-		data, err := ioutil.ReadAll(resp.Body)
-		if err != nil {
-			return nil, err
-		}
-		return unmarshalWrapper(data)
 	}
+	data, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	return unmarshalWrapper(data)
 }
 
 // Wrapper function for requestResource(), handling HTTP response codes before unmarshalling responses.

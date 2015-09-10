@@ -144,7 +144,7 @@ func Configure(cmd *cobra.Command, args []string) {
 	if err != nil {
 		fmt.Printf("Error found: %v", err)
 	}
-	fmt.Printf("Current Working Directory: %v", cfg.AdminUrl)
+	fmt.Printf("Current Working Directory: %v", cfg.AdminURL)
 }
 
 // findConfiguration finds a configuration setting for your login.  Looks for the following configuration file, processed in the following
@@ -182,7 +182,7 @@ func findConfiguration() (*wls.AdminServer, error) {
 		server.Password = viper.GetString(PasswordFlag)
 	}
 	if viper.IsSet(AdminURLFlag) {
-		server.AdminUrl = viper.GetString(AdminURLFlag)
+		server.AdminURL = viper.GetString(AdminURLFlag)
 	}
 
 	return server, nil

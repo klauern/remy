@@ -63,9 +63,9 @@ type RacInstance struct {
 	NumUnavailable                int    `json:",omitempty"`
 }
 
-func (s *AdminServer) DataSources(full_format bool) ([]DataSource, error) {
-	url := fmt.Sprintf("%v%v/datasources", s.AdminUrl, MonitorPath)
-	if full_format {
+func (s *AdminServer) DataSources(isFullFormat bool) ([]DataSource, error) {
+	url := fmt.Sprintf("%v%v/datasources", s.AdminURL, MonitorPath)
+	if isFullFormat {
 		url = url + "?format=full"
 	}
 	w, err := requestAndUnmarshal(url, s)
@@ -79,8 +79,8 @@ func (s *AdminServer) DataSources(full_format bool) ([]DataSource, error) {
 	return datasources, nil
 }
 
-func (s *AdminServer) DataSource(datasource_name string) (*DataSource, error) {
-	url := fmt.Sprintf("%v%v/datasources/%v", s.AdminUrl, MonitorPath, datasource_name)
+func (s *AdminServer) DataSource(datasourceName string) (*DataSource, error) {
+	url := fmt.Sprintf("%v%v/datasources/%v", s.AdminURL, MonitorPath, datasourceName)
 	w, err := requestAndUnmarshal(url, s)
 	if err != nil {
 		return nil, err
