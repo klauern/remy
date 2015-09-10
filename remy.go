@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/viper"
 )
 
+// Config is the base configuration used for all REST requests to the AdminServer
 var Config wls.AdminServer
 
 func main() {

@@ -17,7 +17,7 @@ const (
 	MonitorPath string = "/management/tenant-monitoring"
 )
 
-// Environment provides the configurable details necessary to request resources from a particular server.
+// AdminServer contains the configurable details necessary to request resources from a particular AdminServer.
 // ServerUrl format should be similar to the following: "http(s)://[serverhost]:[adminport]"
 type AdminServer struct {
 	AdminUrl string

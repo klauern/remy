@@ -30,6 +30,8 @@ const (
 // a full format, but for groups (servers, applications, clusters, etc.) the server defaults to a short-form response.
 var FullFormat bool
 
+// Servers takes a Viper Command and it's argument list, and calls the underlying wls.Servers service to retrieve server
+// information.
 func Servers(cmd *cobra.Command, args []string) {
 	//	fmt.Printf("Args passed to Servers: %v\n", args)
 	env, err := findConfiguration()
@@ -57,6 +59,7 @@ func Servers(cmd *cobra.Command, args []string) {
 	}
 }
 
+// Clusters takes a viper.Command object and arguments to call the AdminServer to retrieve Cluster information
 func Clusters(cmd *cobra.Command, args []string) {
 	fmt.Printf("Args passed to Clusters: %v\n", args)
 	env, err := findConfiguration()
@@ -135,7 +138,7 @@ func Applications(cmd *cobra.Command, args []string) {
 	}
 }
 
-// Generate a configuration file to store default credentials to use when making REST queries to an AdminServer
+// Configure will generate a configuration file to store default credentials to use when making REST queries to an AdminServer
 func Configure(cmd *cobra.Command, args []string) {
 	cfg, err := findConfiguration()
 	if err != nil {
@@ -144,7 +147,7 @@ func Configure(cmd *cobra.Command, args []string) {
 	fmt.Printf("Current Working Directory: %v", cfg.AdminUrl)
 }
 
-// Finds a configuration setting for your login.  Looks for the following configuration file, processed in the following
+// findConfiguration finds a configuration setting for your login.  Looks for the following configuration file, processed in the following
 // order:
 //   - command-line flags --username, --password and --server <host:port>
 //   - WLSREST_CONFIG (environment variable)
