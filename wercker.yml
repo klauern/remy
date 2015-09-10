@@ -26,9 +26,6 @@ build:
     # at the right place in the workspace tree
     - setup-go-workspace
 
-    # Run golint to find suggestions for code fixes
-    - golint
-
     # Gets the dependencies
     - script:
         name: go get
@@ -46,3 +43,6 @@ build:
         name: go test
         code: |
           go test ./...
+
+    # Run golint to find suggestions for code fixes after everything else passes (polish)
+    - golint
