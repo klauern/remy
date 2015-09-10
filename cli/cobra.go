@@ -86,6 +86,7 @@ func Clusters(cmd *cobra.Command, args []string) {
 	}
 }
 
+// DataSources is a command function to call out the wls.DataSources resource running on a remote AdminServer.
 func DataSources(cmd *cobra.Command, args []string) {
 	fmt.Printf("Args passed to DataSources: %v\n", args)
 	env, err := findConfiguration()
@@ -112,6 +113,7 @@ func DataSources(cmd *cobra.Command, args []string) {
 	}
 }
 
+// Applications is a Cobra command function to call out to the wls.Applications resource on a remote AdminServer.
 func Applications(cmd *cobra.Command, args []string) {
 	fmt.Printf("Args passed to Applications: %v\n", args)
 	env, err := findConfiguration()

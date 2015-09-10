@@ -5,12 +5,14 @@ import (
 	"fmt"
 )
 
+// DataSource is a specific Data Source in a domain, including all deployed DataSourceInstance's.
 type DataSource struct {
 	Name      string
 	Type      string
 	Instances []DataSourceInstance `json:"instances,omitempty"`
 }
 
+// DataSourceInstance provides run-time information for a data source instance
 type DataSourceInstance struct {
 	Server                             string
 	State                              string
@@ -49,6 +51,7 @@ type DataSourceInstance struct {
 	RacInstances                       []RacInstance `json:",omitempty"`
 }
 
+// RacInstance provide Oracle RAC instance statistics
 type RacInstance struct {
 	InstanceName                  string `json:",omitempty"`
 	State                         string `json:",omitempty"`
@@ -63,6 +66,7 @@ type RacInstance struct {
 	NumUnavailable                int    `json:",omitempty"`
 }
 
+// DataSources returns all generic and GridLink JDBC data sources configured in the domain, and provides run-time information for each data source.
 func (s *AdminServer) DataSources(isFullFormat bool) ([]DataSource, error) {
 	url := fmt.Sprintf("%v%v/datasources", s.AdminURL, MonitorPath)
 	if isFullFormat {
@@ -79,15 +83,16 @@ func (s *AdminServer) DataSources(isFullFormat bool) ([]DataSource, error) {
 	return datasources, nil
 }
 
-func (s *AdminServer) DataSource(datasourceName string) (*DataSource, error) {
-	url := fmt.Sprintf("%v%v/datasources/%v", s.AdminURL, MonitorPath, datasourceName)
+// DataSource returns run-time information for the specified data source, including Oracle RAC statistics for GridLink data sources.
+func (s *AdminServer) DataSource(dataSourceName string) (*DataSource, error) {
+	url := fmt.Sprintf("%v%v/datasources/%v", s.AdminURL, MonitorPath, dataSourceName)
 	w, err := requestAndUnmarshal(url, s)
 	if err != nil {
 		return nil, err
 	}
-	var datasource DataSource
-	if err := json.Unmarshal(w.Body.Item, &datasource); err != nil {
+	var dataSource DataSource
+	if err := json.Unmarshal(w.Body.Item, &dataSource); err != nil {
 		return nil, err
 	}
-	return &datasource, nil
+	return &dataSource, nil
 }
