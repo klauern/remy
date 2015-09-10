@@ -26,11 +26,14 @@ build:
     # at the right place in the workspace tree
     - setup-go-workspace
 
+    # Run golint to find suggestions for code fixes
+    - golint
+
     # Gets the dependencies
     - script:
         name: go get
         code: |
-          go get
+          go get ./...
 
     # Build the project
     - script:
