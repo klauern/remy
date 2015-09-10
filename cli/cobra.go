@@ -152,14 +152,14 @@ func Configure(cmd *cobra.Command, args []string) {
 //   - .wlsrest.cfg (in the $HOME directory)
 //
 // This is borrowed lovingly from Ansible's similar setup for it's configuration (http://docs.ansible.com/ansible/intro_configuration.html)
-func findConfiguration() (*wls.WlsAdminServer, error) {
+func findConfiguration() (*wls.AdminServer, error) {
 	viper.AutomaticEnv()
 	viper.SetEnvPrefix("WLS")
-	viper.BindEnv(USERNAME_FLAG)
-	viper.BindEnv(PASSWORD_FLAG)
-	viper.BindEnv(ADMINURL_FLAG)
+	viper.BindEnv(UsernameFlag)
+	viper.BindEnv(PasswordFlag)
+	viper.BindEnv(AdminURLFlag)
 	viper.SetConfigType("toml")
-	viper.SetConfigName(CONFIG_FILE)
+	viper.SetConfigName(ConfigFile)
 	u, err := user.Current()
 	if err != nil {
 		return nil, err

@@ -35,10 +35,10 @@ func TestAcceptJsonHeaderCall(t *testing.T) {
 
 func CreateTestServerResourceRouters() *mux.Router {
 	r := mux.NewRouter()
-	r.HandleFunc(MONITOR_PATH+"/servers", func(w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc(MonitorPath+"/servers", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte(servers_json))
 	})
-	r.HandleFunc(MONITOR_PATH+"/servers/{server}", func(w http.ResponseWriter, r *http.Request) {
+	r.HandleFunc(MonitorPath+"/servers/{server}", func(w http.ResponseWriter, r *http.Request) {
 		vars := mux.Vars(r)
 		server := vars["server"]
 		if server != "adminserver" {

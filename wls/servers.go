@@ -22,7 +22,7 @@ type Server struct {
 }
 
 func (s *AdminServer) Servers(full_format bool) ([]Server, error) {
-	url := fmt.Sprintf("%v%v/servers", s.AdminUrl, MONITOR_PATH)
+	url := fmt.Sprintf("%v%v/servers", s.AdminUrl, MonitorPath)
 	if full_format {
 		url = url + "?format=full"
 	}
@@ -38,7 +38,7 @@ func (s *AdminServer) Servers(full_format bool) ([]Server, error) {
 }
 
 func (s *AdminServer) Server(servername string) (*Server, error) {
-	url := fmt.Sprintf("%v%v/servers/%v", s.AdminUrl, MONITOR_PATH, servername)
+	url := fmt.Sprintf("%v%v/servers/%v", s.AdminUrl, MonitorPath, servername)
 	w, err := requestAndUnmarshal(url, s)
 	if err != nil {
 		return nil, err
