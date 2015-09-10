@@ -185,7 +185,5 @@ func findConfiguration() (*wls.AdminServer, error) {
 		server.AdminUrl = viper.GetString(AdminURLFlag)
 	}
 
-	//	viper.Debug()
-
 	return server, nil
 }
