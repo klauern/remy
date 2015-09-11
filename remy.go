@@ -7,10 +7,15 @@ import (
 	"github.com/klauern/remy/cli"
 	"github.com/klauern/remy/wls"
 	"github.com/spf13/viper"
+	"fmt"
 )
 
 // Config is the base configuration used for all REST requests to the AdminServer
 var Config wls.AdminServer
+
+const (
+	remyVersion string = "0.1"
+)
 
 func main() {
 
@@ -63,6 +68,16 @@ func main() {
 		Run:   cli.Configure,
 	}
 
+	// Version command displays the version of the application.
+	var versionCmd = &cobra.Command{
+		Use: "version",
+		Short: "Show the version of this command",
+		Long: "Display the version of this command",
+		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Printf("remy version %v\n", remyVersion)
+		},
+	}
+
 	// Add option to pass --full-format for all responses.  Single server, application, etc., requests will always return
 	// full responses, but group-related queries will return shortened versions
 	WlsRestCmd.PersistentFlags().BoolVarP(&cli.FullFormat, cli.FullFormatFlag, "f", false, "Return full format from REST server")
@@ -78,6 +93,6 @@ func main() {
 
 	viper.BindPFlags(WlsRestCmd.PersistentFlags())
 
-	WlsRestCmd.AddCommand(applicationsCmd, configureCmd, clustersCmd, datasourcesCmd, serversCmd)
+	WlsRestCmd.AddCommand(applicationsCmd, configureCmd, clustersCmd, datasourcesCmd, serversCmd, versionCmd)
 	WlsRestCmd.Execute()
 }
