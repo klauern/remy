@@ -59,8 +59,8 @@ func main() {
 	}
 
 	// Generate a configuration setting file in your ~/ home or local directory.
-	// When determined to be in the ~/home, it will be a ~/.wlsrest.cfg file.
-	// When a local file, it will be a wlsrest.cfg file instead.
+	// When determined to be in the ~/home, it will be a ~/.wlsrest.toml file.
+	// When a local file, it will be a wlsrest.toml file instead.
 	var configureCmd = &cobra.Command{
 		Use:   "config",
 		Short: "Configure the credentials and server to default REST connections to",
@@ -70,9 +70,9 @@ func main() {
 
 	// Version command displays the version of the application.
 	var versionCmd = &cobra.Command{
-		Use: "version",
+		Use:   "version",
 		Short: "Show the version of this command",
-		Long: "Display the version of this command",
+		Long:  "Display the version of this command",
 		Run: func(cmd *cobra.Command, args []string) {
 			fmt.Printf("remy version %v\n", remyVersion)
 		},

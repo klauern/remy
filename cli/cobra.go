@@ -10,7 +10,7 @@ import (
 )
 
 const (
-	// ConfigFile is the base file prefix for looking for configuration files.  wlsrest.cfg, .wlsrest.cfg are all valid filenames
+	// ConfigFile is the base file prefix for looking for configuration files.  wlsrest.toml, .wlsrest.toml are all valid filenames
 	ConfigFile = "wlsrest"
 
 	// AdminURLFlag is the flag for specifying/overriding the Administration Server url (http://localhost:7001)
