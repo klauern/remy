@@ -52,11 +52,7 @@ var FullFormat bool
 // Servers takes a Viper Command and it's argument list, and calls the underlying wls.Servers service to retrieve server
 // information.
 func Servers(cmd *cobra.Command, args []string) {
-	//	fmt.Printf("Args passed to Servers: %v\n", args)
-	env, err := findConfiguration()
-	if err != nil {
-		panic(fmt.Sprintf("No configuration found.  Please call 'help config' to find out how to set this"))
-	}
+	env := findConfiguration()
 	if len(args) > 2 {
 		panic(fmt.Sprintf("Too many arguments.  enter 'help servers' command to find out how to call this"))
 	}
@@ -81,10 +77,7 @@ func Servers(cmd *cobra.Command, args []string) {
 // Clusters takes a viper.Command object and arguments to call the AdminServer to retrieve Cluster information
 func Clusters(cmd *cobra.Command, args []string) {
 	fmt.Printf("Args passed to Clusters: %v\n", args)
-	env, err := findConfiguration()
-	if err != nil {
-		panic(fmt.Sprintf("No configuration found.  Please call 'help config' to find out how to set this"))
-	}
+	env := findConfiguration()
 	if len(args) > 2 {
 		panic(fmt.Sprintf("Too many arguments.  enter 'help clusters' command to find out how to call this"))
 	}
@@ -108,10 +101,7 @@ func Clusters(cmd *cobra.Command, args []string) {
 // DataSources is a command function to call out the wls.DataSources resource running on a remote AdminServer.
 func DataSources(cmd *cobra.Command, args []string) {
 	fmt.Printf("Args passed to DataSources: %v\n", args)
-	env, err := findConfiguration()
-	if err != nil {
-		panic(fmt.Sprintf("No configuration found.  Please call 'help config' to find out how to set this"))
-	}
+	env := findConfiguration()
 	if len(args) > 2 {
 		panic(fmt.Sprintf("Too many arguments.  enter 'help datasources' command to find out how to call this"))
 	}
@@ -135,10 +125,7 @@ func DataSources(cmd *cobra.Command, args []string) {
 // Applications is a Cobra command function to call out to the wls.Applications resource on a remote AdminServer.
 func Applications(cmd *cobra.Command, args []string) {
 	fmt.Printf("Args passed to Applications: %v\n", args)
-	env, err := findConfiguration()
-	if err != nil {
-		panic(fmt.Sprintf("No configuration found.  Please call 'help config' to find out how to set this"))
-	}
+	env := findConfiguration()
 	if len(args) > 2 {
 		panic(fmt.Sprintf("Too many arguments.  enter 'help applications' command to find out how to call this"))
 	}
@@ -161,10 +148,7 @@ func Applications(cmd *cobra.Command, args []string) {
 
 // Configure generates or updates a configuration file to store default credentials to use when making REST queries to an AdminServer
 func Configure(cmd *cobra.Command, args []string) {
-	cfg, err := findConfiguration()
-	if err != nil {
-		panic(fmt.Errorf("Not able to find configuration: %s \n", err))
-	}
+	cfg := findConfiguration()
 
 	if viper.GetBool(EnvironmentSetFlag) {
 		fmt.Printf("Using the environment variables to set the %v, %v, and %v environment variables\n", "WLS_USERNAME", "WLS_PASSWORD", "WLS_ADMINURL")
@@ -172,7 +156,7 @@ func Configure(cmd *cobra.Command, args []string) {
 	}
 	var buf bytes.Buffer
 	enc := toml.NewEncoder(&buf)
-	err = enc.Encode(cfg)
+	err := enc.Encode(cfg)
 	if err != nil {
 		panic(fmt.Errorf("Unable to encode wlsrest configuration: %s \n", err))
 	}
@@ -218,45 +202,46 @@ func setEnvironmentVariables(env *wls.AdminServer) {
 	}
 }
 
-// findConfiguration finds a configuration setting for your login.  Looks for the following configuration file, processed in the following
-// order of precedence:
+// findConfiguration finds and retrieves a configuration setting for your login.  It looks for the configurations in the following locations,
+// processed in the following order of precedence (higher to lower precedence):
 //   - command-line flags --username, --password and --server <host:port>
 //   - WLS_USERNAME, WLS_PASSWORD, WLS_ADMINURL (environment variables)
 //   - wlsrest.toml (in the current directory)
 //   - .wlsrest.toml (in the $HOME directory)
 //
 // This is borrowed lovingly from Ansible's similar setup for it's configuration (http://docs.ansible.com/ansible/intro_configuration.html)
-func findConfiguration() (*wls.AdminServer, error) {
+func findConfiguration() *wls.AdminServer {
+	// We only load TOML files currently
+	viper.SetConfigType("toml")
+
+	// Add the ./wlsrest.toml configuration file first, it will override the next file to find
+	if cwd, err := os.Getwd(); err == nil {
+		viper.SetConfigName(ConfigFile)
+		viper.AddConfigPath(cwd)
+		viper.ReadInConfig()
+
+	}
+	// Add the ~/.wlsrest.toml config next.  It will fall-through to find this one if there's not one in the current dir
+	viper.SetConfigName("." + ConfigFile)
+	if u, err := user.Current(); err == nil {
+		fmt.Printf("User Home: %v\n", u.HomeDir)
+		viper.AddConfigPath(u.HomeDir)
+		viper.ReadInConfig()
+	}
+
+	// Define environment variables to look for.
 	viper.SetEnvPrefix("WLS")
 	viper.BindEnv(UsernameFlag)
 	viper.BindEnv(AdminURLFlag)
 	viper.BindEnv(PasswordFlag)
+	viper.AutomaticEnv()
 
-	viper.SetConfigType("toml")
-	cwd, err := os.Getwd()
-	if err != nil {
-		panic(fmt.Errorf("errof getting current working directory: %s\n", err))
-		return nil, err
-	}
-	viper.SetConfigName(ConfigFile)
-	viper.AddConfigPath(cwd)
-	viper.ReadInConfig()
-
-	viper.SetConfigName("." + ConfigFile)
-	u, err := user.Current()
-	if err != nil {
-		return nil, err
-	}
-	fmt.Printf("User Home: %v\n", u.HomeDir)
-	viper.AddConfigPath(u.HomeDir)
-	viper.ReadInConfig()
-
+	// Finally, load the configuration pieces from Viper
 	server := &wls.AdminServer{}
 	server.Username = viper.GetString(UsernameFlag)
 	server.Password = viper.GetString(PasswordFlag)
 	server.AdminURL = viper.GetString(AdminURLFlag)
 
-	viper.AutomaticEnv()
-
-	return server, nil
+//	fmt.Printf("%+v", server)
+	return server
 }
