@@ -32,6 +32,8 @@ build:
         code: |
           go get
           go get -u github.com/gorilla/mux # for testing
+          go get -u github.com/alecthomas/gometalinter
+          gometalinter --install --update
 
     # Build the project
     - script:
@@ -47,3 +49,9 @@ build:
 
     # Run golint to find suggestions for code fixes after everything else passes (polish)
     - golint
+
+    # run the super-mega-awesome gometalinter
+    - script:
+        name: gometalinter
+        code: |
+          gometalinter ./...
