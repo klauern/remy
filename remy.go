@@ -4,14 +4,23 @@ import (
 	//	"github.com/klauern/wlsrest/wls"
 	"github.com/spf13/cobra"
 	//	"fmt"
+	"fmt"
 	"github.com/klauern/remy/cli"
 	"github.com/klauern/remy/wls"
 	"github.com/spf13/viper"
-	"fmt"
 )
 
 // Config is the base configuration used for all REST requests to the AdminServer
 var Config wls.AdminServer
+
+// FlagLocalConfig determines whether to generate/update a the config file in the local ./ directory or not
+var FlagLocalConfig bool
+
+// FlagHomeConfig determines whether to generate/update the $HOME ~/ folder's .wlstrest.cfg file or not
+var FlagHomeConfig bool
+
+// FlagEnvConfig determines whether to generate/update the various $WLS_* environment variables or not
+var FlagEnvConfig bool
 
 const (
 	remyVersion string = "0.1"
@@ -91,7 +100,12 @@ func main() {
 	// Allow the Password property to be overridden on the command-line
 	WlsRestCmd.PersistentFlags().StringVarP(&Config.Password, cli.PasswordFlag, "p", "welcome1", "Password for the user")
 
+	configureCmd.Flags().BoolVar(&FlagEnvConfig, cli.EnvironmentSetFlag, false, "Set the WLS_* environment variables")
+	configureCmd.Flags().BoolVar(&FlagHomeConfig, cli.HomeSetFlag, false, "Generate/Update the ~/$HOME config file")
+	configureCmd.Flags().BoolVar(&FlagLocalConfig, cli.LocalSetFlag, false, "Generate/Update the local directory's config file")
+
 	viper.BindPFlags(WlsRestCmd.PersistentFlags())
+	viper.BindPFlags(configureCmd.Flags())
 
 	WlsRestCmd.AddCommand(applicationsCmd, configureCmd, clustersCmd, datasourcesCmd, serversCmd, versionCmd)
 	WlsRestCmd.Execute()

@@ -1,17 +1,25 @@
 package cli
 
 import (
+	"bytes"
 	"fmt"
+	"github.com/BurntSushi/toml"
 	"github.com/klauern/remy/wls"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"io/ioutil"
 	"os"
 	"os/user"
+	"path"
+	"strings"
 )
 
 const (
 	// ConfigFile is the base file prefix for looking for configuration files.  wlsrest.toml, .wlsrest.toml are all valid filenames
 	ConfigFile = "wlsrest"
+
+	// ConfigFileSuffix is used to append the suffix to the config file.  We'll be using TOML format.
+	ConfigFileSuffix = ".toml"
 
 	// AdminURLFlag is the flag for specifying/overriding the Administration Server url (http://localhost:7001)
 	AdminURLFlag = "adminurl"
@@ -24,6 +32,17 @@ const (
 
 	// FullFormatFlag is the flag to override whether to request the fully-formatted dataset for a resource
 	FullFormatFlag = "full-format"
+
+	// EnvironmentSetFlag is used in the 'config' command to determine whether to set user, pass, serverUrl in the
+	// environment variables.  These environment variables are prefixed with WLS_*.
+	EnvironmentSetFlag = "environment"
+
+	// LocalSetFlag is the flag used in the 'config' command for setting whether to generate/update the local directory's ./wlsrest.toml config
+	// file.
+	LocalSetFlag = "local"
+
+	// HomeSetFlag is the flag used in the 'config' command to set whether to generate/update the ~/.wlsrest.toml configuration file
+	HomeSetFlag = "home"
 )
 
 // FullFormat determines whether to request fully-formatted responses from the REST endpoint.  For single-instance requests, this is always
@@ -140,21 +159,71 @@ func Applications(cmd *cobra.Command, args []string) {
 	}
 }
 
-// Configure will generate a configuration file to store default credentials to use when making REST queries to an AdminServer
+// Configure generates or updates a configuration file to store default credentials to use when making REST queries to an AdminServer
 func Configure(cmd *cobra.Command, args []string) {
 	cfg, err := findConfiguration()
 	if err != nil {
-		fmt.Printf("Error found: %v", err)
+		panic(fmt.Errorf("Not able to find configuration: %s \n", err))
 	}
-	fmt.Printf("Current Working Directory: %v", cfg.AdminURL)
+
+	if viper.GetBool(EnvironmentSetFlag) {
+		fmt.Printf("Using the environment variables to set the %v, %v, and %v environment variables\n", "WLS_USERNAME", "WLS_PASSWORD", "WLS_ADMINURL")
+		setEnvironmentVariables(cfg)
+	}
+	var buf bytes.Buffer
+	enc := toml.NewEncoder(&buf)
+	err = enc.Encode(cfg)
+	if err != nil {
+		panic(fmt.Errorf("Unable to encode wlsrest configuration: %s \n", err))
+	}
+
+	if viper.GetBool(LocalSetFlag) {
+		fmt.Printf("Using the Local directory to set the ./wlsrest.toml file\n")
+		cwd, err := os.Getwd()
+		if err != nil {
+			panic(err)
+		}
+
+		err = ioutil.WriteFile(path.Join(cwd, ConfigFile+".toml"), buf.Bytes(), 0644)
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	if viper.GetBool(HomeSetFlag) {
+		fmt.Printf("Using the $HOME directory to generate the ~/.wlsrest.toml file\n")
+		u, err := user.Current()
+		if err != nil {
+			panic(err)
+		}
+		home := u.HomeDir
+		err = ioutil.WriteFile(path.Join(home, "."+ConfigFile+".toml"), buf.Bytes(), 0644)
+		if err != nil {
+			panic(err)
+		}
+	}
+}
+
+func setEnvironmentVariables(env *wls.AdminServer) {
+	prefixEnv := "WLS_"
+
+	if uerr := os.Setenv(strings.ToUpper(prefixEnv+UsernameFlag), env.Username); uerr != nil {
+		panic(uerr)
+	}
+	if perr := os.Setenv(strings.ToUpper(prefixEnv+PasswordFlag), env.Password); perr != nil {
+		panic(perr)
+	}
+	if aerr := os.Setenv(strings.ToUpper(prefixEnv+AdminURLFlag), env.AdminURL); aerr != nil {
+		panic(aerr)
+	}
 }
 
 // findConfiguration finds a configuration setting for your login.  Looks for the following configuration file, processed in the following
 // order:
 //   - command-line flags --username, --password and --server <host:port>
 //   - WLSREST_CONFIG (environment variable)
-//   - wlsrest.cfg (in the current directory)
-//   - .wlsrest.cfg (in the $HOME directory)
+//   - wlsrest.toml (in the current directory)
+//   - .wlsrest.toml (in the $HOME directory)
 //
 // This is borrowed lovingly from Ansible's similar setup for it's configuration (http://docs.ansible.com/ansible/intro_configuration.html)
 func findConfiguration() (*wls.AdminServer, error) {
@@ -163,29 +232,32 @@ func findConfiguration() (*wls.AdminServer, error) {
 	viper.BindEnv(UsernameFlag)
 	viper.BindEnv(PasswordFlag)
 	viper.BindEnv(AdminURLFlag)
+
 	viper.SetConfigType("toml")
+	cwd, err := os.Getwd()
+	if err != nil {
+		panic(fmt.Errorf("errof getting current working directory: %s\n", err))
+		return nil, err
+	}
 	viper.SetConfigName(ConfigFile)
+	viper.AddConfigPath(cwd)
+	viper.ReadInConfig()
+
+	viper.SetConfigName("." + ConfigFile)
 	u, err := user.Current()
 	if err != nil {
 		return nil, err
 	}
+	fmt.Printf("User Home: %v\n", u.HomeDir)
 	viper.AddConfigPath(u.HomeDir)
-	cwd, err := os.Getwd()
-	if err != nil {
-		return nil, err
-	}
-	viper.AddConfigPath(cwd)
+	viper.ReadInConfig()
 
 	server := &wls.AdminServer{}
-	if viper.IsSet(UsernameFlag) {
-		server.Username = viper.GetString(UsernameFlag)
-	}
-	if viper.IsSet(PasswordFlag) {
-		server.Password = viper.GetString(PasswordFlag)
-	}
-	if viper.IsSet(AdminURLFlag) {
-		server.AdminURL = viper.GetString(AdminURLFlag)
-	}
+	server.Username = viper.GetString(UsernameFlag)
+	server.Password = viper.GetString(PasswordFlag)
+	server.AdminURL = viper.GetString(AdminURLFlag)
+
+	viper.Debug()
 
 	return server, nil
 }
