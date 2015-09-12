@@ -219,19 +219,18 @@ func setEnvironmentVariables(env *wls.AdminServer) {
 }
 
 // findConfiguration finds a configuration setting for your login.  Looks for the following configuration file, processed in the following
-// order:
+// order of precedence:
 //   - command-line flags --username, --password and --server <host:port>
-//   - WLSREST_CONFIG (environment variable)
+//   - WLS_USERNAME, WLS_PASSWORD, WLS_ADMINURL (environment variables)
 //   - wlsrest.toml (in the current directory)
 //   - .wlsrest.toml (in the $HOME directory)
 //
 // This is borrowed lovingly from Ansible's similar setup for it's configuration (http://docs.ansible.com/ansible/intro_configuration.html)
 func findConfiguration() (*wls.AdminServer, error) {
-	viper.AutomaticEnv()
 	viper.SetEnvPrefix("WLS")
 	viper.BindEnv(UsernameFlag)
-	viper.BindEnv(PasswordFlag)
 	viper.BindEnv(AdminURLFlag)
+	viper.BindEnv(PasswordFlag)
 
 	viper.SetConfigType("toml")
 	cwd, err := os.Getwd()
@@ -257,7 +256,7 @@ func findConfiguration() (*wls.AdminServer, error) {
 	server.Password = viper.GetString(PasswordFlag)
 	server.AdminURL = viper.GetString(AdminURLFlag)
 
-	viper.Debug()
+	viper.AutomaticEnv()
 
 	return server, nil
 }
