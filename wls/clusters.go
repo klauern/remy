@@ -14,7 +14,7 @@ type Cluster struct {
 		State                  string
 		Health                 string
 		IsClusterMaster        bool   `json:"clusterMaster,omitempty"`
-		DropOutFrequency       string `json",omitempty"`
+		DropOutFrequency       string `json:",omitempty"`
 		ResendRequestsCount    int    `json:",omitempty"`
 		FragmentsSentCount     int    `json:",omitempty"`
 		FragmentsReceivedCount int    `json:",omitempty"`
