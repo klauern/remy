@@ -3,6 +3,7 @@ package wls
 import (
 	"encoding/json"
 	"fmt"
+	"bytes"
 )
 
 // Server is a specific Server instance deployed to the domain under the given AdminServer
@@ -20,6 +21,13 @@ type Server struct {
 	OsName                  string  `json:",omitempty"`
 	OsVersion               string  `json:",omitempty"`
 	JvmProcessorLoad        float64 `json:",omitempty"`
+}
+
+func (s *Server) GoString() string {
+	var buffer bytes.Buffer
+	buffer.WriteString(fmt.Sprintf("Name: %v\tState: %v\tHealth: %v\n", s.Name, s.State, s.Health))
+	buffer.WriteString(fmt.Sprintf("Cluster: %v\tCurrentMachine: %v\tWLS Version: %v\n", s.ClusterName, s.CurrentMachine, s.WeblogicVersion))
+	return buffer.String()
 }
 
 // Servers returns all servers configured in a domain and provides run-time information for each server, including the server state and health.

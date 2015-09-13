@@ -118,3 +118,10 @@ func TestUnmarshalSingleServer(t *testing.T) {
 		}
 	}
 }
+
+func TestGoStringerServer(t *testing.T) {
+	wrapper, _ := unmarshalWrapper([]byte(singleServer))
+	var server Server
+	json.Unmarshal(wrapper.Body.Item, &server)
+	fmt.Println(fmt.Sprintf("Server: %#v", &server))
+}
