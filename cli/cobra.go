@@ -1,17 +1,15 @@
 package cli
 
 import (
-	"bytes"
 	"fmt"
-	"github.com/BurntSushi/toml"
-	"github.com/klauern/remy/wls"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"io/ioutil"
 	"os"
 	"os/user"
 	"path"
-	"strings"
+
+	"github.com/klauern/remy/wls"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 const (
@@ -214,6 +212,6 @@ func findConfiguration() *wls.AdminServer {
 	server.Password = viper.GetString(PasswordFlag)
 	server.AdminURL = viper.GetString(AdminURLFlag)
 
-//	fmt.Printf("%+v\n", server)
+	//	fmt.Printf("%+v\n", server)
 	return server
 }
