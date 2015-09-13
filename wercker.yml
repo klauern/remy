@@ -32,8 +32,9 @@ build:
         code: |
           go get
           go get -u github.com/gorilla/mux # for testing
-          go get -u github.com/alecthomas/gometalinter
-          gometalinter --install --update
+          # Disabling the following until I get a handle on what I need it for
+          # go get -u github.com/alecthomas/gometalinter
+          # gometalinter --install --update
 
     # Build the project
     - script:
