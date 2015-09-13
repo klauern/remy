@@ -58,8 +58,8 @@ build:
     - script:
         name: goxc compile and release
         code: |
-          goxc
 #          goxc -wlc default publish-github -apikey=$GITHUB_TOKEN
+          goxc -tasks-=publish-github
 
     # run the super-mega-awesome gometalinter
     # Disabling it until I get it working on my own computer
