@@ -134,10 +134,12 @@ TODO
 
 # TODO List Prior to `0.1`, `1.0`, `whatever.0`
 
-[ ] - TONS more tests (test-first is hard for me, sorry guys)
-[ ] - Pretty print formatting for responses
-[ ] - Enrich documentation across the board
-[ ] - Configure downloadable releases
+- [ ] TONS more tests (test-first is hard for me, sorry guys)
+  - [ ] Command-Line Flag parsing Tests
+  - [ ] Configuration Parsing / Flag handling
+- [ ] Pretty print formatting for responses
+- [ ] Enrich documentation across the board
+- [ ] Configure downloadable releases
 
 # Contributing
 
