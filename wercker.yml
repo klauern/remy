@@ -56,8 +56,8 @@ build:
     - script:
         name: goxc compile and release
         code: |
-          goxc
-#          goxc -tasks-=publish-github
+          goxc -tasks-=publish-github
+          # Don't publish to github quite yet.  It creates too many "draft" versions
 
 deploy:
   steps:
