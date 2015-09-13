@@ -150,13 +150,6 @@ func Applications(cmd *cobra.Command, args []string) {
 func Configure(cmd *cobra.Command, args []string) {
 	cfg := findConfiguration()
 
-	var buf bytes.Buffer
-	enc := toml.NewEncoder(&buf)
-	err := enc.Encode(cfg)
-	if err != nil {
-		panic(fmt.Errorf("Unable to encode wlsrest configuration: %s \n", err))
-	}
-
 	if viper.GetBool(LocalSetFlag) {
 		fmt.Printf("Using the Local directory to generate the wlsrest.toml file\n")
 		cwd, err := os.Getwd()
@@ -213,9 +206,6 @@ func findConfiguration() *wls.AdminServer {
 
 	// Define environment variables to look for.
 	viper.SetEnvPrefix("WLS")
-	viper.BindEnv(UsernameFlag)
-	viper.BindEnv(AdminURLFlag)
-	viper.BindEnv(PasswordFlag)
 	viper.AutomaticEnv()
 
 	// Finally, load the configuration pieces from Viper

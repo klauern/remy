@@ -100,7 +100,6 @@ func main() {
 	// Allow the Password property to be overridden on the command-line
 	WlsRestCmd.PersistentFlags().StringVarP(&Config.Password, cli.PasswordFlag, "p", "welcome1", "Password for the user")
 
-	configureCmd.Flags().BoolVar(&FlagEnvConfig, cli.EnvironmentSetFlag, false, "Set the WLS_* environment variables")
 	configureCmd.Flags().BoolVar(&FlagHomeConfig, cli.HomeSetFlag, false, "Generate/Update the ~/$HOME config file")
 	configureCmd.Flags().BoolVar(&FlagLocalConfig, cli.LocalSetFlag, false, "Generate/Update the local directory's config file")
 
