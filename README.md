@@ -138,6 +138,7 @@ TODO
   - [ ] Command-Line Flag parsing Tests
   - [ ] Configuration Parsing / Flag handling
 - [ ] Pretty print formatting for responses
+  - [ ] Possible Termbox implementation
 - [ ] Enrich documentation across the board
 - [ ] Configure downloadable releases
 
