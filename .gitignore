@@ -29,3 +29,6 @@ _testmain.go
 
 # goxc (https://github.com/laher/goxc)
 .goxc.local.json
+
+# testing
+wlsrest.toml
