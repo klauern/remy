@@ -31,8 +31,8 @@ func main() {
 	// Base command for the application.
 	var WlsRestCmd = &cobra.Command{
 		Use:   "remy",
-		Short: "Query a WebLogic Server's Rest Management Extention-enabled resources",
-		Long:  "Query your underlying server's resources, including Datasources, Applications, Clusters, and Servers by using the WebLogic RESTful Management Extensions API",
+		Short: "Query a WebLogic Domain's REST Management Extention-enabled resources",
+		Long:  "Query a WebLogic Domain's resources, including Datasources, Applications, Clusters, and Servers by using the WebLogic RESTful Management Extensions API",
 	}
 
 	// Request the Servers resource, optionally passing a specific [servername] instance to get that particular Server.
