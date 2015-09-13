@@ -31,11 +31,6 @@ build:
         name: go get
         code: |
           go get -t ./...
-          # don't need
-          # go get -u github.com/gorilla/mux # for testing
-          # Disabling the following until I get a handle on what I need it for
-          # go get -u github.com/alecthomas/gometalinter
-          # gometalinter --install --update
 
     # Build the project
     - script:
@@ -63,13 +58,6 @@ build:
         code: |
           goxc
 #          goxc -tasks-=publish-github
-
-    # run the super-mega-awesome gometalinter
-    # Disabling it until I get it working on my own computer
-    #- script:
-    #    name: gometalinter
-    #    code: |
-    #      gometalinter ./...
 
 deploy:
   steps:
