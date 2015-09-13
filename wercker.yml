@@ -66,3 +66,7 @@ deploy:
     - github-create-release:
         token: $GITHUB_TOKEN
         tag: $APP_VERSION
+    - github-upload-asset:
+        token: $GITHUB_TOKEN
+        file: remy
+        filename: remy-$APP_VERSION
