@@ -67,13 +67,16 @@ These can be provided by a number of options:
    * `export WLS_USERNAME='weblogic'`
    * `export WLS_PASSWORD='welcome1'`
 3. Local directory `wlsrest.toml` config file
-```sh
+4. Home directory (~/, $HOME) `.wlsrest.toml` config file
+
+An example `wlsrest.toml` or `.wlsrest.toml` config file:
+
+```
 [/home/user/] $ cat ~/.wlsrest.toml
 AdminURL = "http://homeserver:7001"
 Username = "homeuser"
 Password = "homepassword"
 ```
-4. Home directory (~/, $HOME) `.wlsrest.toml` config file
 
 ### Generating Configuration for the above
 
