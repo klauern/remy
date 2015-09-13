@@ -1,8 +1,10 @@
 package wls
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/BurntSushi/toml"
 	"io/ioutil"
 	"net/http"
 )
@@ -83,4 +85,14 @@ func unmarshalWrapper(data []byte) (*Wrapper, error) {
 		return nil, err
 	}
 	return &w, nil
+}
+
+func (cfg AdminServer) EncodeConfigFile() *bytes.Buffer {
+	var buf bytes.Buffer
+	enc := toml.NewEncoder(&buf)
+	err := enc.Encode(cfg)
+	if err != nil {
+		panic(fmt.Errorf("Unable to encode wlsrest configuration: %s \n", err))
+	}
+	return &buf
 }

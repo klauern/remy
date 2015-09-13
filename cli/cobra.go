@@ -150,10 +150,6 @@ func Applications(cmd *cobra.Command, args []string) {
 func Configure(cmd *cobra.Command, args []string) {
 	cfg := findConfiguration()
 
-	if viper.GetBool(EnvironmentSetFlag) {
-		fmt.Printf("Using the environment variables to set the %v, %v, and %v environment variables\n", "WLS_USERNAME", "WLS_PASSWORD", "WLS_ADMINURL")
-		setEnvironmentVariables(cfg)
-	}
 	var buf bytes.Buffer
 	enc := toml.NewEncoder(&buf)
 	err := enc.Encode(cfg)
@@ -162,43 +158,29 @@ func Configure(cmd *cobra.Command, args []string) {
 	}
 
 	if viper.GetBool(LocalSetFlag) {
-		fmt.Printf("Using the Local directory to set the ./wlsrest.toml file\n")
+		fmt.Printf("Using the Local directory to generate the wlsrest.toml file\n")
 		cwd, err := os.Getwd()
 		if err != nil {
-			panic(err)
+			panic(fmt.Errorf("Unable to get current working directory: %v", err))
 		}
 
-		err = ioutil.WriteFile(path.Join(cwd, ConfigFile+".toml"), buf.Bytes(), 0644)
+		err = ioutil.WriteFile(path.Join(cwd, ConfigFile+".toml"), cfg.EncodeConfigFile().Bytes(), 0644)
 		if err != nil {
-			panic(err)
+			panic(fmt.Errorf("Unable to write file to %v: %v", cwd, err))
 		}
 	}
 
 	if viper.GetBool(HomeSetFlag) {
-		fmt.Printf("Using the $HOME directory to generate the ~/.wlsrest.toml file\n")
+		fmt.Printf("Using the $HOME directory to generate the .wlsrest.toml file\n")
 		u, err := user.Current()
 		if err != nil {
-			panic(err)
+			panic(fmt.Errorf("Unable to get current User: %v", err))
 		}
 		home := u.HomeDir
-		err = ioutil.WriteFile(path.Join(home, "."+ConfigFile+".toml"), buf.Bytes(), 0644)
+		err = ioutil.WriteFile(path.Join(home, "."+ConfigFile+".toml"), cfg.EncodeConfigFile().Bytes(), 0644)
 		if err != nil {
-			panic(err)
+			panic(fmt.Errorf("Unable to write configuration file to ~/: %v", err))
 		}
-	}
-}
-
-func setEnvironmentVariables(env *wls.AdminServer) {
-	prefixEnv := "WLS_"
-
-	if uerr := os.Setenv(strings.ToUpper(prefixEnv+UsernameFlag), env.Username); uerr != nil {
-		panic(uerr)
-	}
-	if perr := os.Setenv(strings.ToUpper(prefixEnv+PasswordFlag), env.Password); perr != nil {
-		panic(perr)
-	}
-	if aerr := os.Setenv(strings.ToUpper(prefixEnv+AdminURLFlag), env.AdminURL); aerr != nil {
-		panic(aerr)
 	}
 }
 
@@ -242,6 +224,6 @@ func findConfiguration() *wls.AdminServer {
 	server.Password = viper.GetString(PasswordFlag)
 	server.AdminURL = viper.GetString(AdminURLFlag)
 
-//	fmt.Printf("%+v", server)
+//	fmt.Printf("%+v\n", server)
 	return server
 }
