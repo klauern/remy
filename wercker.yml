@@ -67,3 +67,11 @@ deploy:
 #    - github-create-release:
 #        token: $GITHUB_TOKEN
 #        tag: $APP_VERSION
+    - script:
+        name: install goxc for release
+        code: go get github.com/laher/goxc
+    - script:
+        name: goxc compile and release
+        code: |
+          goxc -wlc default publish-github -apikey=$GITHUB_TOKEN
+          goxc
