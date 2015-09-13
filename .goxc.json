@@ -1,6 +1,6 @@
 {
 	"Tasks": [
-		"master",
+		"default",
 		"publish-github"
 	],
 	"PackageVersion": "0.0.1",
