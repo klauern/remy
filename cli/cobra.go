@@ -69,6 +69,7 @@ func Servers(cmd *cobra.Command, args []string) {
 		panic(fmt.Sprintf("Too many arguments.  enter 'help servers' command to find out how to call this"))
 	}
 	if len(args) == 1 {
+		fmt.Printf("Finding Server information for %v\n", args[0])
 		server, err := env.Server(args[0])
 		if err != nil {
 			panic(fmt.Sprintf("Unable to get Servers: %v", err))
@@ -76,8 +77,7 @@ func Servers(cmd *cobra.Command, args []string) {
 		fmt.Printf("Server %v: %v", args[0], server)
 	}
 	if len(args) == 0 {
-		fmt.Printf("Full Format? %+v", FullFormat)
-		fmt.Printf("Environment: %+v", env)
+		fmt.Printf("Finding all Servers\nUsing Full Format? %v\n", FullFormat)
 		servers, err := env.Servers(FullFormat)
 		if err != nil {
 			panic(fmt.Sprintf("Unable to get Servers: %v", err))
@@ -88,12 +88,12 @@ func Servers(cmd *cobra.Command, args []string) {
 
 // Clusters takes a viper.Command object and arguments to call the AdminServer to retrieve Cluster information
 func Clusters(cmd *cobra.Command, args []string) {
-	fmt.Printf("Args passed to Clusters: %v\n", args)
 	env := findConfiguration()
 	if len(args) > 2 {
 		panic(fmt.Sprintf("Too many arguments.  enter 'help clusters' command to find out how to call this"))
 	}
 	if len(args) == 1 {
+		fmt.Printf("Finding Cluster information for %v\n", args[0])
 		server, err := env.Cluster(args[0])
 		if err != nil {
 			panic(fmt.Sprintf("Unable to get Clusters: %v", err))
@@ -101,7 +101,7 @@ func Clusters(cmd *cobra.Command, args []string) {
 		fmt.Printf("Cluster %v: %v", args[0], server)
 	}
 	if len(args) == 0 {
-		fmt.Printf("Environment: %+v", env)
+		fmt.Printf("Finding All Clusters\nUsing Full Format? %v\n", FullFormat)
 		clusters, err := env.Clusters(FullFormat)
 		if err != nil {
 			panic(fmt.Sprintf("Unable to get Clusters: %v", err))
@@ -112,12 +112,12 @@ func Clusters(cmd *cobra.Command, args []string) {
 
 // DataSources is a command function to call out the wls.DataSources resource running on a remote AdminServer.
 func DataSources(cmd *cobra.Command, args []string) {
-	fmt.Printf("Args passed to DataSources: %v\n", args)
 	env := findConfiguration()
 	if len(args) > 2 {
 		panic(fmt.Sprintf("Too many arguments.  enter 'help datasources' command to find out how to call this"))
 	}
 	if len(args) == 1 {
+		fmt.Printf("Finding DataSource information for %v\n", args[0])
 		datasource, err := env.DataSource(args[0])
 		if err != nil {
 			panic(fmt.Sprintf("Unable to get Datasource: %v", err))
@@ -125,10 +125,10 @@ func DataSources(cmd *cobra.Command, args []string) {
 		fmt.Printf("Datasource %v: %v", args[0], datasource)
 	}
 	if len(args) == 0 {
-		fmt.Printf("Environment: %+v", env)
+		fmt.Printf("Finding all DataSources\nUsing Full Format? %v\n", FullFormat)
 		datasources, err := env.DataSources(FullFormat)
 		if err != nil {
-			panic(fmt.Sprintf("Unable to get Datasources: %v", err))
+			panic(fmt.Sprintf("Unable to get Datasources: %v\n", err))
 		}
 		fmt.Printf("Datasources:\n%+v", datasources)
 	}
@@ -136,12 +136,12 @@ func DataSources(cmd *cobra.Command, args []string) {
 
 // Applications is a Cobra command function to call out to the wls.Applications resource on a remote AdminServer.
 func Applications(cmd *cobra.Command, args []string) {
-	fmt.Printf("Args passed to Applications: %v\n", args)
 	env := findConfiguration()
 	if len(args) > 2 {
 		panic(fmt.Sprintf("Too many arguments.  enter 'help applications' command to find out how to call this"))
 	}
 	if len(args) == 1 {
+		fmt.Printf("Finding application information for %v\n", args[0])
 		application, err := env.Application(args[0])
 		if err != nil {
 			panic(fmt.Sprintf("Unable to get Application: %v", err))
@@ -149,10 +149,10 @@ func Applications(cmd *cobra.Command, args []string) {
 		fmt.Printf("Application %v: %v", args[0], application)
 	}
 	if len(args) == 0 {
-		fmt.Printf("Environment: %+v", env)
+		fmt.Printf("Finding All Applications\nUsing Full Format? %v\n", FullFormat)
 		applications, err := env.Applications(FullFormat)
 		if err != nil {
-			panic(fmt.Sprintf("Unable to get Applications: %v", err))
+			panic(fmt.Sprintf("Unable to get Applications: %v\n", err))
 		}
 		fmt.Printf("Applications:\n%+v", applications)
 	}
@@ -211,7 +211,6 @@ func findConfiguration() *wls.AdminServer {
 	// Add the ~/.wlsrest.toml config next.  It will fall-through to find this one if there's not one in the current dir
 	viper.SetConfigName("." + ConfigFile)
 	if u, err := user.Current(); err == nil {
-		fmt.Printf("User Home: %v\n", u.HomeDir)
 		viper.AddConfigPath(u.HomeDir)
 		viper.ReadInConfig()
 	}
