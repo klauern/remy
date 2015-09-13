@@ -30,8 +30,9 @@ build:
     - script:
         name: go get
         code: |
-          go get
-          go get -u github.com/gorilla/mux # for testing
+          go get -t ./...
+          # don't need
+          # go get -u github.com/gorilla/mux # for testing
           # Disabling the following until I get a handle on what I need it for
           # go get -u github.com/alecthomas/gometalinter
           # gometalinter --install --update
@@ -63,10 +64,6 @@ deploy:
     - script:
         name: generate version from git
         code: export APP_VERSION=$(git describe --abbrev=5 --dirty --always --tags)
-    - github-create-release:
-        token: $GITHUB_TOKEN
-        tag: $APP_VERSION
-    - github-upload-asset:
-        token: $GITHUB_TOKEN
-        file: remy
-        filename: remy-$APP_VERSION
+#    - github-create-release:
+#        token: $GITHUB_TOKEN
+#        tag: $APP_VERSION

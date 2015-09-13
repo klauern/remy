@@ -26,3 +26,6 @@ _testmain.go
 # IntelliJ IDEA project files
 .idea/workspace.xml
 .idea/libraries/GOPATH__remy_.xml
+
+# goxc (https://github.com/laher/goxc)
+.goxc.local.json
