@@ -74,4 +74,5 @@ deploy:
         name: goxc compile and release
         code: |
           goxc -wlc default publish-github -apikey=$GITHUB_TOKEN
+          go get -t ./...
           goxc
