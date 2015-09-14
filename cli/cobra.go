@@ -100,8 +100,7 @@ func Clusters(cmd *cobra.Command, args []string) {
 		if err != nil {
 			panic(fmt.Sprintf("Unable to get Clusters: %v", err))
 		}
-		fmt.Printf("%#v", cluster)
-//		fmt.Printf("Cluster %v: %v", args[0], cluster)
+		fmt.Printf("%#v\n", cluster)
 	}
 	if len(args) == 0 {
 		fmt.Printf("Finding All Clusters\nUsing Full Format? %v\n", FullFormat)
@@ -112,7 +111,6 @@ func Clusters(cmd *cobra.Command, args []string) {
 		for i, _ := range clusters {
 			fmt.Printf("%#v\n", &clusters[i])
 		}
-//		fmt.Printf("Clusters:\n%+v", clusters)
 	}
 }
 

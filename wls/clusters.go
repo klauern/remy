@@ -3,6 +3,7 @@ package wls
 import (
 	"encoding/json"
 	"fmt"
+	"bytes"
 )
 
 // Cluster is the underlying struct for a single Cluster in a domain.  Each domain may have multiple Cluster instances,
@@ -19,6 +20,18 @@ type Cluster struct {
 		FragmentsSentCount     int    `json:",omitempty"`
 		FragmentsReceivedCount int    `json:",omitempty"`
 	} `json:"servers,omitempty"`
+}
+
+func (c *Cluster) GoString() string {
+	var buffer bytes.Buffer
+	buffer.WriteString(fmt.Sprintf("Name: %v\n", c.Name))
+	for i, _ := range c.Servers {
+		buffer.WriteString(fmt.Sprintf("State:             %-14v| Health:               %-14v| Cluster Master?       %-14v| Drop Out Freq: %-14v\n",
+			c.Servers[i].State, c.Servers[i].Health, c.Servers[i].IsClusterMaster, c.Servers[i].DropOutFrequency))
+		buffer.WriteString(fmt.Sprintf("Resend Req. Count: %-14v| Fragments Sent Count: %-14v| Fragments Recv Count: %-14v\n",
+			c.Servers[i].ResendRequestsCount, c.Servers[i].FragmentsSentCount, c.Servers[i].FragmentsReceivedCount))
+	}
+	return buffer.String()
 }
 
 // Clusters returns all clusters configured in a domain and provides run-time information for each cluster and for each cluster's member servers, including all the member servers' state and health.
