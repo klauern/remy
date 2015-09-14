@@ -25,8 +25,11 @@ type Server struct {
 
 func (s *Server) GoString() string {
 	var buffer bytes.Buffer
-	buffer.WriteString(fmt.Sprintf("Name: %v\tState: %v\tHealth: %v\n", s.Name, s.State, s.Health))
-	buffer.WriteString(fmt.Sprintf("Cluster: %v\tCurrentMachine: %v\tWLS Version: %v\n", s.ClusterName, s.CurrentMachine, s.WeblogicVersion))
+	buffer.WriteString(fmt.Sprintf("Name:        %-14v| State:           %-14v| Health:        %-55v\n", s.Name, s.State, s.Health))
+	buffer.WriteString(fmt.Sprintf("Cluster:     %-14v| CurrentMachine:  %-14v| JVM Load:      %-55v\n", s.ClusterName, s.CurrentMachine, s.JvmProcessorLoad))
+	buffer.WriteString(fmt.Sprintf("Sockets #:   %-14v| Heap Sz Cur:     %-14v| Heap Free Cur: %-55v\n", s.OpenSocketsCurrentCount, s.HeapSizeCurrent, s.HeapFreeCurrent))
+	buffer.WriteString(fmt.Sprintf("Java Ver:    %-14v| OS Name:         %-14v| OS Version:    %-55v\n", s.JavaVersion, s.OsName, s.OsVersion))
+	buffer.WriteString(fmt.Sprintf("WLS Version: %-14v\n", s.WeblogicVersion))
 	return buffer.String()
 }
 

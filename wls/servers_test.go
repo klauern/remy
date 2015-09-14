@@ -123,5 +123,6 @@ func TestGoStringerServer(t *testing.T) {
 	wrapper, _ := unmarshalWrapper([]byte(singleServer))
 	var server Server
 	json.Unmarshal(wrapper.Body.Item, &server)
-	fmt.Println(fmt.Sprintf("Server: %#v", &server))
+	fmt.Printf("%# v", &server)
+//	pretty.Printf("%# v", server)
 }

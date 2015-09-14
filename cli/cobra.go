@@ -74,7 +74,7 @@ func Servers(cmd *cobra.Command, args []string) {
 		if err != nil {
 			panic(fmt.Sprintf("Unable to get Servers: %v", err))
 		}
-		fmt.Printf("Server %v: %v", args[0], server)
+		fmt.Printf("Server %v:\n%#v", args[0], server)
 	}
 	if len(args) == 0 {
 		fmt.Printf("Finding all Servers\nUsing Full Format? %v\n", FullFormat)
@@ -82,7 +82,9 @@ func Servers(cmd *cobra.Command, args []string) {
 		if err != nil {
 			panic(fmt.Sprintf("Unable to get Servers: %v", err))
 		}
-		fmt.Printf("Servers:\n%+v", servers)
+		for i, _ := range servers {
+			fmt.Printf("%#v\n", &servers[i])
+		}
 	}
 }
 
@@ -94,11 +96,12 @@ func Clusters(cmd *cobra.Command, args []string) {
 	}
 	if len(args) == 1 {
 		fmt.Printf("Finding Cluster information for %v\n", args[0])
-		server, err := env.Cluster(args[0])
+		cluster, err := env.Cluster(args[0])
 		if err != nil {
 			panic(fmt.Sprintf("Unable to get Clusters: %v", err))
 		}
-		fmt.Printf("Cluster %v: %v", args[0], server)
+		fmt.Printf("%#v", cluster)
+//		fmt.Printf("Cluster %v: %v", args[0], cluster)
 	}
 	if len(args) == 0 {
 		fmt.Printf("Finding All Clusters\nUsing Full Format? %v\n", FullFormat)
@@ -106,7 +109,10 @@ func Clusters(cmd *cobra.Command, args []string) {
 		if err != nil {
 			panic(fmt.Sprintf("Unable to get Clusters: %v", err))
 		}
-		fmt.Printf("Clusters:\n%+v", clusters)
+		for i, _ := range clusters {
+			fmt.Printf("%#v\n", &clusters[i])
+		}
+//		fmt.Printf("Clusters:\n%+v", clusters)
 	}
 }
 
