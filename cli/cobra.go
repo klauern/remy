@@ -15,7 +15,7 @@ import (
 
 const (
 
-	remyVersion string = "0.1"
+	remyVersion string = "0.1.0"
 
 	// ConfigFile is the base file prefix for looking for configuration files.  wlsrest.toml, .wlsrest.toml are all valid filenames
 	ConfigFile = "wlsrest"
