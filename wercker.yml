@@ -72,18 +72,22 @@ deploy:
     - script:
         name: generate version from goxc directory
         code: export APP_VERSION=$(ls -1 goxc/)
+    - script:
+        name: log more things
+        code: |
+          ls -als goxc/$APP_VERSION/
     - github-create-release:
         token: $GITHUB_TOKEN
         tag: $APP_VERSION
     - github-upload-asset:
         token: $GITHUB_TOKEN
-        file: $WERCKER_OUTPUT_DIR/goxc/0.1.1/remy_0.1.1_windows_amd64.zip
+        file: $WERCKER_ROOT/goxc/0.1.1/remy_0.1.1_windows_amd64.zip
     - github-upload-asset:
         token: $GITHUB_TOKEN
-        file: $WERCKER_OUTPUT_DIR/goxc/0.1.1/remy_0.1.1_linux_amd64.tar.gz
+        file: $WERCKER_ROOT/goxc/0.1.1/remy_0.1.1_linux_amd64.tar.gz
     - github-upload-asset:
         token: $GITHUB_TOKEN
-        file: $WERCKER_OUTPUT_DIR/goxc/0.1.1/remy_0.1.1_darwin_amd64.zip
+        file: $WERCKER_ROOT/goxc/0.1.1/remy_0.1.1_darwin_amd64.zip
     - github-upload-asset:
         token: $GITHUB_TOKEN
         file: $WERCKER_OUTPUT_DIR/goxc/0.1.1/remy_0.1.1_amd64.deb
