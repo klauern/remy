@@ -53,13 +53,23 @@ build:
 #    - script:
 #        name: configure deploy key for goxc
 #        code: goxc -wlc default publish-github -apikey=$GITHUB_TOKEN
+#    - script:
+#        name: goxc compile (linux, windows, darwin, amd64)
+#        code: |
+#          goxc -d=$WERCKER_OUTPUT_DIR/goxc/ -tasks-=go-test -tasks-=downloads-page
     - script:
-        name: goxc compile (linux, windows, darwin, amd64)
-        code: |
-          goxc -d=$WERCKER_OUTPUT_DIR/goxc/ -tasks-=go-test -tasks-=downloads-page
-    - script:
-        name: store APP_VERSION
+        name: store $APP_VERSION
         code: export APP_VERSION=$(git describe --abbrev=5 --dirty --always --tags)
+
+#    - script:
+#        name: install mitchellh/gox
+#        code: |
+#          go get -u -v github.com/mitchellh/gox
+#          sudo -E env PATH=$GOPATH/bin:$PATH gox -build-toolchain
+#    - tcnksm/gox:
+#         os: "darwin linux windows" # OS to cross-compile
+#         arch: "amd64"              # ARCH to cross-compile
+
 
 deploy:
   steps:
@@ -69,14 +79,6 @@ deploy:
           pwd
           ls -als
           ls -als goxc/
-    - script:
-            name: install mitchellh/gox
-            code: |
-            go get -u -v github.com/mitchellh/gox
-            sudo -E env PATH=$GOPATH/bin:$PATH gox -build-toolchai
-    - tcnksm/gox:
-         os: "darwin linux windows" # OS to cross-compile
-         arch: "amd64"              # ARCH to cross-compile
 #    - script:
 #        name: generate version from goxc directory
 #        code: export APP_VERSION=$(ls -1 goxc/)
@@ -84,9 +86,9 @@ deploy:
 #        name: log more things
 #        code: |
 #          ls -als goxc/$APP_VERSION/
-#    - github-create-release:
-#        token: $GITHUB_TOKEN
-#        tag: $APP_VERSION
+    - github-create-release:
+        token: $GITHUB_TOKEN
+        tag: $APP_VERSION
 #    - github-upload-asset:
 #        token: $GITHUB_TOKEN
 #        file: $WERCKER_ROOT/goxc/0.1.1/remy_0.1.1_windows_amd64.zip
