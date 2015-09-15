@@ -69,4 +69,7 @@ deploy:
         tag: $APP_VERSION
     - github-upload-asset:
         token: $GITHUB_TOKEN
-        file: /go/bin/remy-xc/0.1.1/remy_0.1.1_*
+        file: /go/bin/remy-xc/0.1.1/remy_0.1.1_windows_amd64.zip
+    - github-upload-asset:
+        token: $GITHUB_TOKEN
+        file: /go/bin/remy-xc/0.1.1/remy_0.1.1_linux_amd64.tar.gz
