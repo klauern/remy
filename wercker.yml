@@ -70,24 +70,32 @@ deploy:
           ls -als
           ls -als goxc/
     - script:
-        name: generate version from goxc directory
-        code: export APP_VERSION=$(ls -1 goxc/)
-    - script:
-        name: log more things
-        code: |
-          ls -als goxc/$APP_VERSION/
-    - github-create-release:
-        token: $GITHUB_TOKEN
-        tag: $APP_VERSION
-    - github-upload-asset:
-        token: $GITHUB_TOKEN
-        file: $WERCKER_ROOT/goxc/0.1.1/remy_0.1.1_windows_amd64.zip
-    - github-upload-asset:
-        token: $GITHUB_TOKEN
-        file: $WERCKER_ROOT/goxc/0.1.1/remy_0.1.1_linux_amd64.tar.gz
-    - github-upload-asset:
-        token: $GITHUB_TOKEN
-        file: $WERCKER_ROOT/goxc/0.1.1/remy_0.1.1_darwin_amd64.zip
-    - github-upload-asset:
-        token: $GITHUB_TOKEN
-        file: $WERCKER_OUTPUT_DIR/goxc/0.1.1/remy_0.1.1_amd64.deb
+            name: install mitchellh/gox
+            code: |
+            go get -u -v github.com/mitchellh/gox
+            sudo -E env PATH=$GOPATH/bin:$PATH gox -build-toolchai
+    - tcnksm/gox:
+         os: "darwin linux windows" # OS to cross-compile
+         arch: "amd64"              # ARCH to cross-compile
+#    - script:
+#        name: generate version from goxc directory
+#        code: export APP_VERSION=$(ls -1 goxc/)
+#    - script:
+#        name: log more things
+#        code: |
+#          ls -als goxc/$APP_VERSION/
+#    - github-create-release:
+#        token: $GITHUB_TOKEN
+#        tag: $APP_VERSION
+#    - github-upload-asset:
+#        token: $GITHUB_TOKEN
+#        file: $WERCKER_ROOT/goxc/0.1.1/remy_0.1.1_windows_amd64.zip
+#    - github-upload-asset:
+#        token: $GITHUB_TOKEN
+#        file: $WERCKER_ROOT/goxc/0.1.1/remy_0.1.1_linux_amd64.tar.gz
+#    - github-upload-asset:
+#        token: $GITHUB_TOKEN
+#        file: $WERCKER_ROOT/goxc/0.1.1/remy_0.1.1_darwin_amd64.zip
+#    - github-upload-asset:
+#        token: $GITHUB_TOKEN
+#        file: $WERCKER_OUTPUT_DIR/goxc/0.1.1/remy_0.1.1_amd64.deb
