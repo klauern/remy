@@ -56,7 +56,7 @@ build:
     - script:
         name: goxc compile (linux, windows, darwin, amd64)
         code: |
-          goxc -d=$WERCKER_OUTPUT_DIR/goxc/
+          goxc -d=$WERCKER_OUTPUT_DIR/goxc/ -tasks-=go-test -tasks-=downloads-page
     - script:
         name: store APP_VERSION
         code: export APP_VERSION=$(git describe --abbrev=5 --dirty --always --tags)
@@ -69,9 +69,9 @@ deploy:
           pwd
           ls -als
           ls -als goxc/
-#    - script:
-#        name: generate version from git
-#        code: export APP_VERSION=$(git describe --abbrev=5 --dirty --always --tags)
+    - script:
+        name: generate version from goxc directory
+        code: export APP_VERSION=$(ls -1 goxc/)
     - github-create-release:
         token: $GITHUB_TOKEN
         tag: $APP_VERSION
