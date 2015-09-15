@@ -1,9 +1,9 @@
 package wls
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
-	"bytes"
 )
 
 // Cluster is the underlying struct for a single Cluster in a domain.  Each domain may have multiple Cluster instances,

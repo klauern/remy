@@ -96,7 +96,7 @@ func Servers(cmd *cobra.Command, args []string) {
 		if err != nil {
 			panic(fmt.Sprintf("Unable to get Servers: %v", err))
 		}
-		for i, _ := range servers {
+		for i := range servers {
 			fmt.Printf("%#v\n", &servers[i])
 		}
 	}
@@ -122,7 +122,7 @@ func Clusters(cmd *cobra.Command, args []string) {
 		if err != nil {
 			panic(fmt.Sprintf("Unable to get Clusters: %v", err))
 		}
-		for i, _ := range clusters {
+		for i := range clusters {
 			fmt.Printf("%#v\n", &clusters[i])
 		}
 	}

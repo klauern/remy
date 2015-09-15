@@ -4,9 +4,10 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/BurntSushi/toml"
 	"io/ioutil"
 	"net/http"
+
+	"github.com/BurntSushi/toml"
 )
 
 // See http://docs.oracle.com/cd/E23943_01/web.1111/e24682/toc.htm#RESTS149

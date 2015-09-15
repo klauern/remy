@@ -1,9 +1,9 @@
 package wls
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
-	"bytes"
 )
 
 // Server is a specific Server instance deployed to the domain under the given AdminServer

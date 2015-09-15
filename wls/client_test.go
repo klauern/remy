@@ -2,10 +2,11 @@ package wls
 
 import (
 	"fmt"
-	"github.com/gorilla/mux"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/gorilla/mux"
 )
 
 func TestClientAuthenticatedCalls(t *testing.T) {
