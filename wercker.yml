@@ -56,7 +56,7 @@ build:
     - script:
         name: goxc compile and release
         code: |
-          goxc -tasks-=publish-github -d=$WERCKER_OUTPUT_DIR
+          goxc -tasks-=publish-github -d=$WERCKER_OUTPUT_DIR/goxc/
           # Don't publish to github quite yet.  It creates too many "draft" versions
 
 deploy:
@@ -69,7 +69,7 @@ deploy:
         tag: $APP_VERSION
     - github-upload-asset:
         token: $GITHUB_TOKEN
-        file: $WERCKER_OUTPUT_DIR/0.1.1/remy_0.1.1_windows_amd64.zip
+        file: $WERCKER_OUTPUT_DIR/goxc/0.1.1/remy_0.1.1_windows_amd64.zip
     - github-upload-asset:
         token: $GITHUB_TOKEN
-        file: $WERCKER_OUTPUT_DIR/0.1.1/remy_0.1.1_linux_amd64.tar.gz
+        file: $WERCKER_OUTPUT_DIR/goxc/0.1.1/remy_0.1.1_linux_amd64.tar.gz
