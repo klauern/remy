@@ -7,6 +7,13 @@ import (
 	"os/user"
 	"path"
 
+	"crypto/aes"
+	"crypto/cipher"
+	"crypto/rand"
+	"encoding/base64"
+	"io"
+	"strings"
+
 	"github.com/klauern/remy/wls"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -29,6 +36,16 @@ const (
 
 	// UsernameFlag is the flag for specifying/overriding the Username to log in to AdminServer with
 	UsernameFlag = "username"
+
+	// RemyKey is the key used to get or set the encryption key used in encrypting a password
+	RemyKey = "remykey"
+
+	// DefaultRemyKeyString is the default 32-byte string used to encrypt plain-text passwords in AES.
+	DefaultRemyKeyString = "This is the default key.  Please"
+
+	// EncryptedPrefix is what is prepended to any encrypted password.  If a password doesn't have this, it is treated
+	// as plain text instead.
+	EncryptedPrefix = "{AES}"
 
 	// FullFormatFlag is the flag to override whether to request the fully-formatted dataset for a resource
 	FullFormatFlag = "full-format"
@@ -163,6 +180,13 @@ func Applications(cmd *cobra.Command, args []string) {
 func Configure(cmd *cobra.Command, args []string) {
 	cfg := findConfiguration()
 
+	// Encrypt the password before setting it in the config
+	if !strings.Contains(cfg.Password, EncryptedPrefix) {
+		encryptedPass := encrypt([]byte(viper.GetString(RemyKey)), cfg.Password)
+		viper.Set(PasswordFlag, encryptedPass)
+		cfg.Password = EncryptedPrefix + encryptedPass
+	}
+
 	if viper.GetBool(LocalSetFlag) {
 		fmt.Printf("Using the Local directory to generate the wlsrest.toml file\n")
 		cwd, err := os.Getwd()
@@ -202,6 +226,8 @@ func findConfiguration() *wls.AdminServer {
 	// We only load TOML files currently
 	viper.SetConfigType("toml")
 
+	viper.SetDefault(RemyKey, DefaultRemyKeyString)
+
 	// Add the ./wlsrest.toml configuration file first, it will override the next file to find
 	if cwd, err := os.Getwd(); err == nil {
 		viper.SetConfigName(ConfigFile)
@@ -223,13 +249,67 @@ func findConfiguration() *wls.AdminServer {
 	// Finally, load the configuration pieces from Viper
 	server := &wls.AdminServer{}
 	server.Username = viper.GetString(UsernameFlag)
-	server.Password = viper.GetString(PasswordFlag)
+	if strings.Contains(viper.GetString(PasswordFlag), "{AES}") {
+		server.Password = decrypt([]byte(viper.GetString(RemyKey)), viper.GetString(PasswordFlag)[len(EncryptedPrefix):])
+	} else {
+		server.Password = viper.GetString(PasswordFlag)
+	}
 	server.AdminURL = viper.GetString(AdminURLFlag)
 
 	//	fmt.Printf("%+v\n", server)
 	return server
 }
 
+// encrypt string to base64 crypto using AES
+func encrypt(key []byte, text string) string {
+	plaintext := []byte(text)
+
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		panic(err)
+	}
+
+	// The IV needs to be unique, but not secure. Therefore it's common to
+	// include it at the beginning of the ciphertext.
+	ciphertext := make([]byte, aes.BlockSize+len(plaintext))
+	iv := ciphertext[:aes.BlockSize]
+	if _, err := io.ReadFull(rand.Reader, iv); err != nil {
+		panic(err)
+	}
+
+	stream := cipher.NewCFBEncrypter(block, iv)
+	stream.XORKeyStream(ciphertext[aes.BlockSize:], plaintext)
+
+	// convert to base64
+	return base64.URLEncoding.EncodeToString(ciphertext)
+}
+
+// decrypt from base64 to decrypted string
+func decrypt(key []byte, cryptoText string) string {
+	ciphertext, _ := base64.URLEncoding.DecodeString(cryptoText)
+
+	block, err := aes.NewCipher(key)
+	if err != nil {
+		panic(err)
+	}
+
+	// The IV needs to be unique, but not secure. Therefore it's common to
+	// include it at the beginning of the ciphertext.
+	if len(ciphertext) < aes.BlockSize {
+		panic("ciphertext too short")
+	}
+	iv := ciphertext[:aes.BlockSize]
+	ciphertext = ciphertext[aes.BlockSize:]
+
+	stream := cipher.NewCFBDecrypter(block, iv)
+
+	// XORKeyStream can work in-place if the two arguments are the same.
+	stream.XORKeyStream(ciphertext, ciphertext)
+
+	return fmt.Sprintf("%s", ciphertext)
+}
+
+// Run runs our `remy` application.
 func Run(cfg *wls.AdminServer) {
 	// Base command for the application.
 	var WlsRestCmd = &cobra.Command{
