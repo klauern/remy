@@ -50,25 +50,28 @@ build:
     - script:
         name: install goxc for release
         code: go get github.com/laher/goxc
-    - script:
-        name: configure deploy key for goxc
-        code: goxc -wlc default publish-github -apikey=$GITHUB_TOKEN
+#    - script:
+#        name: configure deploy key for goxc
+#        code: goxc -wlc default publish-github -apikey=$GITHUB_TOKEN
     - script:
         name: goxc compile (linux, windows, darwin, amd64)
         code: |
           goxc -d=$WERCKER_OUTPUT_DIR/goxc/
+    - script:
+        name: store APP_VERSION
+        code: export APP_VERSION=$(git describe --abbrev=5 --dirty --always --tags)
 
 deploy:
   steps:
     - script:
         name: log some output for purposes
         code: |
-          git describe --abbrev=5 --dirty --always --tags
           pwd
+          ls -als
           tree
-    - script:
-        name: generate version from git
-        code: export APP_VERSION=$(git describe --abbrev=5 --dirty --always --tags)
+#    - script:
+#        name: generate version from git
+#        code: export APP_VERSION=$(git describe --abbrev=5 --dirty --always --tags)
     - github-create-release:
         token: $GITHUB_TOKEN
         tag: $APP_VERSION
