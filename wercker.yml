@@ -56,7 +56,7 @@ build:
     - script:
         name: goxc compile and release
         code: |
-          goxc -tasks-=publish-github
+          goxc -tasks-=publish-github -d=$WERCKER_OUTPUT_DIR
           # Don't publish to github quite yet.  It creates too many "draft" versions
 
 deploy:
