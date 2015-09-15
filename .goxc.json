@@ -1,8 +1,9 @@
 {
 	"Tasks": [
-		"default",
-		"publish-github"
+		"default"
 	],
+	"Arch": "amd64",
+	"BuildConstraints": "linux windows darwin",
 	"PackageVersion": "0.1.1",
 	"TaskSettings": {
 		"publish-github": {

@@ -54,16 +54,21 @@ build:
         name: configure deploy key for goxc
         code: goxc -wlc default publish-github -apikey=$GITHUB_TOKEN
     - script:
-        name: goxc compile and release
+        name: goxc compile (linux, windows, darwin, amd64)
         code: |
-          goxc -tasks-=publish-github -d=$WERCKER_OUTPUT_DIR/goxc/
-          # Don't publish to github quite yet.  It creates too many "draft" versions
+          goxc -d=$WERCKER_OUTPUT_DIR/goxc/
 
 deploy:
   steps:
     - script:
+        name: log some output for purposes
+        code: |
+          git describe --abbrev=5 --dirty --always --tags
+          pwd
+          tree
+    - script:
         name: generate version from git
-        code: export APP_VERSION=$(cd $WERCKER_ROOT && git describe --abbrev=5 --dirty --always --tags)
+        code: export APP_VERSION=$(git describe --abbrev=5 --dirty --always --tags)
     - github-create-release:
         token: $GITHUB_TOKEN
         tag: $APP_VERSION
