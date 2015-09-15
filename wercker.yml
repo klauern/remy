@@ -63,7 +63,7 @@ deploy:
   steps:
     - script:
         name: generate version from git
-        code: export APP_VERSION=$(git describe --abbrev=5 --dirty --always --tags)
+        code: export APP_VERSION=$(cd $WERCKER_ROOT && git describe --abbrev=5 --dirty --always --tags)
     - github-create-release:
         token: $GITHUB_TOKEN
         tag: $APP_VERSION
