@@ -77,7 +77,13 @@ deploy:
         tag: $APP_VERSION
     - github-upload-asset:
         token: $GITHUB_TOKEN
-        file: goxc/0.1.1/remy_0.1.1_windows_amd64.zip
+        file: $WERCKER_OUTPUT_DIR/goxc/0.1.1/remy_0.1.1_windows_amd64.zip
     - github-upload-asset:
         token: $GITHUB_TOKEN
-        file: goxc/0.1.1/remy_0.1.1_linux_amd64.tar.gz
+        file: $WERCKER_OUTPUT_DIR/goxc/0.1.1/remy_0.1.1_linux_amd64.tar.gz
+    - github-upload-asset:
+        token: $GITHUB_TOKEN
+        file: $WERCKER_OUTPUT_DIR/goxc/0.1.1/remy_0.1.1_darwin_amd64.zip
+    - github-upload-asset:
+        token: $GITHUB_TOKEN
+        file: $WERCKER_OUTPUT_DIR/goxc/0.1.1/remy_0.1.1_amd64.deb
