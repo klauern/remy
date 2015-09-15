@@ -12,10 +12,8 @@ import (
 	"github.com/spf13/viper"
 )
 
-
 const (
-
-	remyVersion string = "0.1.0"
+	remyVersion string = "0.1.1"
 
 	// ConfigFile is the base file prefix for looking for configuration files.  wlsrest.toml, .wlsrest.toml are all valid filenames
 	ConfigFile = "wlsrest"
@@ -59,7 +57,6 @@ var FlagHomeConfig bool
 
 // FlagEnvConfig determines whether to generate/update the various $WLS_* environment variables or not
 var FlagEnvConfig bool
-
 
 // Servers takes a Viper Command and it's argument list, and calls the underlying wls.Servers service to retrieve server
 // information.
