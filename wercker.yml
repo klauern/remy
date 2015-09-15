@@ -68,7 +68,7 @@ deploy:
         code: |
           pwd
           ls -als
-          tree
+          ls -als goxc/
 #    - script:
 #        name: generate version from git
 #        code: export APP_VERSION=$(git describe --abbrev=5 --dirty --always --tags)
@@ -77,7 +77,7 @@ deploy:
         tag: $APP_VERSION
     - github-upload-asset:
         token: $GITHUB_TOKEN
-        file: $WERCKER_OUTPUT_DIR/goxc/0.1.1/remy_0.1.1_windows_amd64.zip
+        file: goxc/0.1.1/remy_0.1.1_windows_amd64.zip
     - github-upload-asset:
         token: $GITHUB_TOKEN
-        file: $WERCKER_OUTPUT_DIR/goxc/0.1.1/remy_0.1.1_linux_amd64.tar.gz
+        file: goxc/0.1.1/remy_0.1.1_linux_amd64.tar.gz
