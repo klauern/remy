@@ -4,7 +4,7 @@
 	],
 	"Arch": "amd64",
 	"BuildConstraints": "linux windows darwin",
-	"PackageVersion": "0.1.1",
+	"PackageVersion": "0.2.0",
 	"TaskSettings": {
 		"publish-github": {
 			"owner": "klauern",
