@@ -53,10 +53,10 @@ build:
 #    - script:
 #        name: configure deploy key for goxc
 #        code: goxc -wlc default publish-github -apikey=$GITHUB_TOKEN
-#    - script:
-#        name: goxc compile (linux, windows, darwin, amd64)
-#        code: |
-#          goxc -d=$WERCKER_OUTPUT_DIR/goxc/ -tasks-=go-test -tasks-=downloads-page
+    - script:
+        name: goxc compile (linux, windows, darwin, amd64)
+        code: |
+          goxc -d=$WERCKER_OUTPUT_DIR/goxc/ -tasks-=go-test -tasks-=downloads-page
     - script:
         name: store $APP_VERSION
         code: export APP_VERSION=$(git describe --abbrev=5 --dirty --always --tags)
@@ -89,15 +89,15 @@ deploy:
     - github-create-release:
         token: $GITHUB_TOKEN
         tag: $APP_VERSION
-#    - github-upload-asset:
-#        token: $GITHUB_TOKEN
-#        file: $WERCKER_ROOT/goxc/0.1.1/remy_0.1.1_windows_amd64.zip
-#    - github-upload-asset:
-#        token: $GITHUB_TOKEN
-#        file: $WERCKER_ROOT/goxc/0.1.1/remy_0.1.1_linux_amd64.tar.gz
-#    - github-upload-asset:
-#        token: $GITHUB_TOKEN
-#        file: $WERCKER_ROOT/goxc/0.1.1/remy_0.1.1_darwin_amd64.zip
-#    - github-upload-asset:
-#        token: $GITHUB_TOKEN
-#        file: $WERCKER_OUTPUT_DIR/goxc/0.1.1/remy_0.1.1_amd64.deb
+    - github-upload-asset:
+        token: $GITHUB_TOKEN
+        file: $WERCKER_ROOT/goxc/${APP_VERSION}/remy_${APP_VERSION}_windows_amd64.zip
+    - github-upload-asset:
+        token: $GITHUB_TOKEN
+        file: $WERCKER_ROOT/goxc/${APP_VERSION}/remy_${APP_VERSION}_linux_amd64.tar.gz
+    - github-upload-asset:
+        token: $GITHUB_TOKEN
+        file: $WERCKER_ROOT/goxc/0.1.1/remy_0.1.1_darwin_amd64.zip
+    - github-upload-asset:
+        token: $GITHUB_TOKEN
+        file: $WERCKER_OUTPUT_DIR/goxc/0.1.1/remy_0.1.1_amd64.deb
