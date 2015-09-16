@@ -60,6 +60,10 @@ build:
     - script:
         name: store $APP_VERSION
         code: export APP_VERSION=$(git describe --abbrev=5 --dirty --always --tags)
+    - script:
+        name: export env vars
+        code: |
+          export
 
 #    - script:
 #        name: install mitchellh/gox
@@ -74,11 +78,20 @@ build:
 deploy:
   steps:
     - script:
+        name: export env vars
+        code: |
+          export
+    - script:
         name: log some output for purposes
         code: |
           pwd
           ls -als
           ls -als goxc/
+    - script:
+        name: export APP_VERSION from Git repo
+        code: |
+          cd $WERCKER_SOURCE_DIR
+          export APP_VERSION=$(git --describe --dirty --always --tags --abbrev=5)
 #    - script:
 #        name: generate version from goxc directory
 #        code: export APP_VERSION=$(ls -1 goxc/)
