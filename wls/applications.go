@@ -84,7 +84,7 @@ func (a *Application) GoString() string {
 		buffer.WriteString("Target States\n")
 		for i := range a.TargetStates {
 			buffer.WriteString("\t")
-			buffer.WriteString(fmt.Sprintf("Target: %-33v|State: %-14v\n", a.TargetStates[i].Target, a.TargetStates[i].State))
+			buffer.WriteString(fmt.Sprintf("Target: %-40v|State: %-14v\n", a.TargetStates[i].Target, a.TargetStates[i].State))
 		}
 	}
 	if len(a.DataSources) > 0 {
@@ -98,7 +98,7 @@ func (a *Application) GoString() string {
 		buffer.WriteString("Work Managers\n")
 		for i := range a.WorkManagers {
 			buffer.WriteString("\t")
-			buffer.WriteString(fmt.Sprintf("Name: %-35v|Server: %-14v|Pending Requests: %-14v|Completed Requests: %-14v\n", a.WorkManagers[i].Name,
+			buffer.WriteString(fmt.Sprintf("Name: %-42v|Server: %-14v|Pending Requests: %-14v|Completed Requests: %-14v\n", a.WorkManagers[i].Name,
 				a.WorkManagers[i].Server, a.WorkManagers[i].PendingRequests, a.WorkManagers[i].CompletedRequests))
 		}
 	}
@@ -129,7 +129,7 @@ func (a *Application) GoString() string {
 		buffer.WriteString("Request Classes\n")
 		for i := range a.RequestClasses {
 			buffer.WriteString("\t")
-			buffer.WriteString(fmt.Sprintf("Name: %v|Server %v|Request Class Type: %v|Completed Count: %v\n",
+			buffer.WriteString(fmt.Sprintf("Name: %-55v|Server %v|Request Class Type: %v|Completed Count: %v\n",
 				a.RequestClasses[i].Name, a.RequestClasses[i].Server, a.RequestClasses[i].RequestClassType,
 				a.RequestClasses[i].CompletedCount))
 			buffer.WriteString("\t")
