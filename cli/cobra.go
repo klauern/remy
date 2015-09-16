@@ -173,7 +173,7 @@ func Applications(cmd *cobra.Command, args []string) {
 			panic(fmt.Sprintf("Unable to get Applications: %v\n", err))
 		}
 		for i := range applications {
-			fmt.Printf("%#v\n", &applications[i])
+			fmt.Printf("%#v", &applications[i])
 		}
 	}
 }

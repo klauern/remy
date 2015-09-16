@@ -79,26 +79,26 @@ type RequestClass struct {
 func (a *Application) GoString() string {
 	var buffer bytes.Buffer
 
-	buffer.WriteString(fmt.Sprintf("Name: %v|AppType: %v|State: %v|Health: %v\n", a.Name, a.AppType, a.State, a.Health))
+	buffer.WriteString(fmt.Sprintf("Name: %-50v|AppType: %-5v|State: %-12v|Health: %-10v\n", a.Name, a.AppType, a.State, a.Health))
 	if len(a.TargetStates) > 0 {
 		buffer.WriteString("Target States\n")
 		for i := range a.TargetStates {
 			buffer.WriteString("\t")
-			buffer.WriteString(fmt.Sprintf("Target: %v|State: %v\n", a.TargetStates[i].Target, a.TargetStates[i].State))
+			buffer.WriteString(fmt.Sprintf("Target: %-33v|State: %-14v\n", a.TargetStates[i].Target, a.TargetStates[i].State))
 		}
 	}
 	if len(a.DataSources) > 0 {
 		buffer.WriteString("Data Sources\n")
 		for i := range a.DataSources {
 			buffer.WriteString("\t")
-			buffer.WriteString(fmt.Sprintf("Name: %v|Server: %v|State: %v\n", a.DataSources[i].Name, a.DataSources[i].Server, a.DataSources[i].State))
+			buffer.WriteString(fmt.Sprintf("Name: %-35v|Server: %-14v|State: %-14v\n", a.DataSources[i].Name, a.DataSources[i].Server, a.DataSources[i].State))
 		}
 	}
 	if len(a.WorkManagers) > 0 {
 		buffer.WriteString("Work Managers\n")
 		for i := range a.WorkManagers {
 			buffer.WriteString("\t")
-			buffer.WriteString(fmt.Sprintf("Name: %v|Server: %v|Pending Requests: %v|Completed Requests: %v\n", a.WorkManagers[i].Name,
+			buffer.WriteString(fmt.Sprintf("Name: %-35v|Server: %-14v|Pending Requests: %-14v|Completed Requests: %-14v\n", a.WorkManagers[i].Name,
 				a.WorkManagers[i].Server, a.WorkManagers[i].PendingRequests, a.WorkManagers[i].CompletedRequests))
 		}
 	}
