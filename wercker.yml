@@ -86,7 +86,7 @@ deploy:
         code: |
           pwd
           ls -als
-          ls -als goxc/
+          ls -als goxc/0.1.1
     - script:
         name: export APP_VERSION from Git repo
         code: |
