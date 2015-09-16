@@ -87,18 +87,15 @@ deploy:
           pwd
           ls -als
           ls -als goxc/0.1.1
-    - script:
-        name: export APP_VERSION from Git repo
-        code: |
-          cd $WERCKER_SOURCE_DIR
-          export APP_VERSION=$(cd ${WERCKER_SOURCE_DIR} && git describe --dirty --always --tags --abbrev=5)
 #    - script:
-#        name: generate version from goxc directory
-#        code: export APP_VERSION=$(ls -1 goxc/)
-#    - script:
-#        name: log more things
+#        name: export APP_VERSION from Git repo
 #        code: |
-#          ls -als goxc/$APP_VERSION/
+#          cd $WERCKER_SOURCE_DIR
+#          export APP_VERSION=$(cd ${WERCKER_SOURCE_DIR} && git describe --dirty --always --tags --abbrev=5)
+    - script:
+        name: generate version from goxc directory
+        code: |
+          export APP_VERSION=$(ls -1 goxc/)
     - github-create-release:
         token: $GITHUB_TOKEN
         tag: $APP_VERSION
