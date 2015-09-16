@@ -164,7 +164,7 @@ func Applications(cmd *cobra.Command, args []string) {
 		if err != nil {
 			panic(fmt.Sprintf("Unable to get Application: %v", err))
 		}
-		fmt.Printf("Application %v: %v", args[0], application)
+		fmt.Printf("%#v\n", application)
 	}
 	if len(args) == 0 {
 		fmt.Printf("Finding All Applications\nUsing Full Format? %v\n", FullFormat)
@@ -172,7 +172,9 @@ func Applications(cmd *cobra.Command, args []string) {
 		if err != nil {
 			panic(fmt.Sprintf("Unable to get Applications: %v\n", err))
 		}
-		fmt.Printf("Applications:\n%+v", applications)
+		for i := range applications {
+			fmt.Printf("%#v\n", &applications[i])
+		}
 	}
 }
 
