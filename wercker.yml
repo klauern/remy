@@ -91,7 +91,7 @@ deploy:
         name: export APP_VERSION from Git repo
         code: |
           cd $WERCKER_SOURCE_DIR
-          export APP_VERSION=$(git describe --dirty --always --tags --abbrev=5)
+          export APP_VERSION=$(cd ${WERCKER_SOURCE_DIR} && git describe --dirty --always --tags --abbrev=5)
 #    - script:
 #        name: generate version from goxc directory
 #        code: export APP_VERSION=$(ls -1 goxc/)
