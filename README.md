@@ -114,7 +114,8 @@ Password = "welcome1"
 
 # Examples
 
-Below are sample outputs provided by 
+Below are sample outputs provided by the tool itself.  This is a rudimentary **1.0** of the output.  I hope to provide
+ some options for different output at some point.
 
 ## Servers
 
@@ -132,15 +133,15 @@ TODO
 
 TODO
 
-# TODO List Prior to `0.1`, `1.0`, `whatever.0`
+# TODO List Prior to `1.0.0`
 
 - [ ] TONS more tests (test-first is hard for me, sorry guys)
   - [ ] Command-Line Flag parsing Tests
-  - [ ] Configuration Parsing / Flag handling
+  - [X] Configuration Parsing / Flag handling
 - [ ] Pretty print formatting for responses
   - [ ] Possible Termbox implementation
 - [ ] Enrich documentation across the board
-- [ ] Configure downloadable releases
+- [X] Configure downloadable releases
 
 # Contributing
 
