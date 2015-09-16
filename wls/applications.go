@@ -80,41 +80,62 @@ func (a *Application) GoString() string {
 	var buffer bytes.Buffer
 
 	buffer.WriteString(fmt.Sprintf("Name: %v|AppType: %v|State: %v|Health: %v\n", a.Name, a.AppType, a.State, a.Health))
-	buffer.WriteString("Target States\n")
-	for i := range a.TargetStates {
-		buffer.WriteString(fmt.Sprintf("Target: %v|State: %v\n", a.TargetStates[i].Target, a.TargetStates[i].State))
+	if len(a.TargetStates) > 0 {
+		buffer.WriteString("Target States\n")
+		for i := range a.TargetStates {
+			buffer.WriteString("\t")
+			buffer.WriteString(fmt.Sprintf("Target: %v|State: %v\n", a.TargetStates[i].Target, a.TargetStates[i].State))
+		}
 	}
-	buffer.WriteString("Data Sources\n")
-	for i := range a.DataSources {
-		buffer.WriteString(fmt.Sprintf("Name: %v|Server: %v|State: %v\n", a.DataSources[i].Name, a.DataSources[i].Server, a.DataSources[i].State))
+	if len(a.DataSources) > 0 {
+		buffer.WriteString("Data Sources\n")
+		for i := range a.DataSources {
+			buffer.WriteString("\t")
+			buffer.WriteString(fmt.Sprintf("Name: %v|Server: %v|State: %v\n", a.DataSources[i].Name, a.DataSources[i].Server, a.DataSources[i].State))
+		}
 	}
-	buffer.WriteString("Work Managers\n")
-	for i := range a.WorkManagers {
-		buffer.WriteString(fmt.Sprintf("Name: %v|Server: %v|Pending Requests: %v|Completed Requests: %v\n", a.WorkManagers[i].Name,
-			a.WorkManagers[i].Server, a.WorkManagers[i].PendingRequests, a.WorkManagers[i].CompletedRequests))
+	if len(a.WorkManagers) > 0 {
+		buffer.WriteString("Work Managers\n")
+		for i := range a.WorkManagers {
+			buffer.WriteString("\t")
+			buffer.WriteString(fmt.Sprintf("Name: %v|Server: %v|Pending Requests: %v|Completed Requests: %v\n", a.WorkManagers[i].Name,
+				a.WorkManagers[i].Server, a.WorkManagers[i].PendingRequests, a.WorkManagers[i].CompletedRequests))
+		}
 	}
-	buffer.WriteString("Minimum Threads Constraints\n")
-	for i := range a.MinThreadsConstraints {
-		buffer.WriteString(fmt.Sprintf("Name: %v|Server: %v|Pending Req: %v|Completed Req: %v\n", a.MinThreadsConstraints[i].Name,
-			a.MinThreadsConstraints[i].Server, a.MinThreadsConstraints[i].PendingRequests, a.MinThreadsConstraints[i].CompletedRequests))
-		buffer.WriteString(fmt.Sprintf("Executing Reqs: %v|OutOfOrder Exec. Cnt: %v|Must Run Count: %v\n", a.MinThreadsConstraints[i].ExecutingRequests,
-			a.MinThreadsConstraints[i].OutOfOrderExecutionCount, a.MinThreadsConstraints[i].MustRunCount))
-		buffer.WriteString(fmt.Sprintf("Max Wait Time: %v|Current Wait Time: %v\n", a.MinThreadsConstraints[i].MaxWaitTime,
-			a.MinThreadsConstraints[i].CurrentWaitTime))
+	if len(a.MinThreadsConstraints) > 0 {
+		buffer.WriteString("Minimum Threads Constraints\n")
+		for i := range a.MinThreadsConstraints {
+			buffer.WriteString("\t")
+			buffer.WriteString(fmt.Sprintf("Name: %v|Server: %v|Pending Req: %v|Completed Req: %v\n", a.MinThreadsConstraints[i].Name,
+				a.MinThreadsConstraints[i].Server, a.MinThreadsConstraints[i].PendingRequests, a.MinThreadsConstraints[i].CompletedRequests))
+			buffer.WriteString("\t")
+			buffer.WriteString(fmt.Sprintf("Executing Reqs: %v|OutOfOrder Exec. Cnt: %v|Must Run Count: %v\n", a.MinThreadsConstraints[i].ExecutingRequests,
+				a.MinThreadsConstraints[i].OutOfOrderExecutionCount, a.MinThreadsConstraints[i].MustRunCount))
+			buffer.WriteString("\t")
+			buffer.WriteString(fmt.Sprintf("Max Wait Time: %v|Current Wait Time: %v\n", a.MinThreadsConstraints[i].MaxWaitTime,
+				a.MinThreadsConstraints[i].CurrentWaitTime))
+		}
 	}
-	buffer.WriteString("Max Thread Constraints\n")
-	for i := range a.MaxThreadsConstraints {
-		buffer.WriteString(fmt.Sprintf("Name: %v|Server: %v|Executing Reqs: %v|Deferred Reqs: %v\n",
-			a.MaxThreadsConstraints[i].Name, a.MaxThreadsConstraints[i].Server, a.MaxThreadsConstraints[i].ExecutingRequests,
-			a.MaxThreadsConstraints[i].DeferredRequests))
+	if len(a.MaxThreadsConstraints) > 0 {
+		buffer.WriteString("Max Thread Constraints\n")
+		for i := range a.MaxThreadsConstraints {
+			buffer.WriteString("\t")
+			buffer.WriteString(fmt.Sprintf("Name: %v|Server: %v|Executing Reqs: %v|Deferred Reqs: %v\n",
+				a.MaxThreadsConstraints[i].Name, a.MaxThreadsConstraints[i].Server, a.MaxThreadsConstraints[i].ExecutingRequests,
+				a.MaxThreadsConstraints[i].DeferredRequests))
+		}
 	}
-	buffer.WriteString("Request Classes\n")
-	for i := range a.RequestClasses {
-		buffer.WriteString(fmt.Sprintf("Name: %v|Server %v|Request Class Type: %v|Completed Count: %v\n",
-			a.RequestClasses[i].Name, a.RequestClasses[i].Server, a.RequestClasses[i].RequestClassType,
-			a.RequestClasses[i].CompletedCount))
-		buffer.WriteString(fmt.Sprintf("Total Thread Use: %v|Pending Request Cnt: %v|Virtual Time Increment: %v\n",
-			a.RequestClasses[i].TotalThreadUse, a.RequestClasses[i].PendingRequestCount, a.RequestClasses[i].VirtualTimeIncrement))
+	if len(a.RequestClasses) > 0 {
+		buffer.WriteString("Request Classes\n")
+		for i := range a.RequestClasses {
+			buffer.WriteString("\t")
+			buffer.WriteString(fmt.Sprintf("Name: %v|Server %v|Request Class Type: %v|Completed Count: %v\n",
+				a.RequestClasses[i].Name, a.RequestClasses[i].Server, a.RequestClasses[i].RequestClassType,
+				a.RequestClasses[i].CompletedCount))
+			buffer.WriteString("\t")
+			buffer.WriteString(fmt.Sprintf("Total Thread Use: %v|Pending Request Cnt: %v|Virtual Time Increment: %v\n",
+				a.RequestClasses[i].TotalThreadUse, a.RequestClasses[i].PendingRequestCount, a.RequestClasses[i].VirtualTimeIncrement))
+		}
 	}
 
 	return buffer.String()
