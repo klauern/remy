@@ -76,6 +76,15 @@ type RequestClass struct {
 	VirtualTimeIncrement int
 }
 
+// GoString generates a formatted string representation of an Application instance.  This can be used in the following
+// way:
+//
+//   a := &Application{...}
+//   fmt.Sprintf("%#v", a)
+//
+// In printing a string-formatted representation of the Application, only fields and sections where there are
+// actual values will be displayed.  As such, you may find sections missing, such as a MinThreadsConstraint or RequestClass
+// should there not be one defined for that particular Application.
 func (a *Application) GoString() string {
 	var buffer bytes.Buffer
 
