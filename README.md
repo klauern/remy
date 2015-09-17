@@ -16,8 +16,16 @@ to `connect(url="t3://server:7001", username="weblogic", password="welcome1")`, 
 
 # Installation
 
+## Releases
+
+The latest version I put out there is `v0.2.1`, and that can be found on the releases page: [v0.2.1 release](https://github.com/klauern/remy/releases/tag/v0.2.1)
+
+## From Source
+
+For the die-hard coder in you:
+
 ```sh
-go get github.com/klauern/remy
+go get -u github.com/klauern/remy
 ```
 
 # Usage
