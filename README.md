@@ -73,9 +73,9 @@ An example `wlsrest.toml` or `.wlsrest.toml` config file:
 
 ```
 [/home/user/] $ cat ~/.wlsrest.toml
-AdminURL = "http://homeserver:7001"
-Username = "homeuser"
-Password = "homepassword"
+AdminURL = "http://localhost:7001"
+Username = "weblogic"
+Password = "{AES}VHQVFwN72jWgRYzWbnJQugUfCa6LAU0W"
 ```
 
 ### Generating Configuration for the above
