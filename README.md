@@ -1,10 +1,10 @@
 # remy
-CLI for interacting with the WebLogic Server RESTful Management Extensions.
+CLI for interacting with the WebLogic Server RESTful Management Services.
 
 [![wercker status](https://app.wercker.com/status/fe26b6defa4f97dde747ae1f1fbcb815/m "wercker status")](https://app.wercker.com/project/bykey/fe26b6defa4f97dde747ae1f1fbcb815)
 
 `remy` is an application I wrote to learn a little about [golang](http://www.golang.org) as well as to itch a little
-scratch I had with WebLogic servers.  WebLogic has a feature called *RESTful Management Extensions*, which lets you query
+scratch I had with WebLogic servers.  WebLogic has a feature called *[RESTful Management Extensions](http://docs.oracle.com/cd/E23943_01/web.1111/e24682/toc.htm#RESTS149)*, which lets you query
 an AdminServer's domain for various pieces of information it knows about Servers, Clusters, Datasources, and Applications
 that it is resposnible for.  This is pretty useful if you are interested in writing a lot of small scripts to quickly get
 the status of some datasource in your cluster without having to resort to connecting, setting up, and maintaining your own
@@ -119,11 +119,81 @@ Below are sample outputs provided by the tool itself.  This is a rudimentary **1
 
 ## Servers
 
-TODO
+### All Servers (short form)
+
+```sh
+$ remy servers
+Finding all Servers
+Using Full Format? false
+Name:        AdminServer   | State:           RUNNING       | Health:        HEALTH_OK
+Cluster:                   | CurrentMachine:                | JVM Load:      0
+Sockets #:   0             | Heap Sz Cur:     0             | Heap Free Cur: 0
+Java Ver:                  | OS Name:                       | OS Version:
+WLS Version:
+
+Name:        WLS_WSM1      | State:           RUNNING       | Health:        HEALTH_OK
+Cluster:                   | CurrentMachine:                | JVM Load:      0
+Sockets #:   0             | Heap Sz Cur:     0             | Heap Free Cur: 0
+Java Ver:                  | OS Name:                       | OS Version:
+WLS Version:
+
+Name:        WLS_SOA1      | State:           RUNNING       | Health:        HEALTH_OK
+Cluster:                   | CurrentMachine:                | JVM Load:      0
+Sockets #:   0             | Heap Sz Cur:     0             | Heap Free Cur: 0
+Java Ver:                  | OS Name:                       | OS Version:
+WLS Version:
+
+Name:        WLS_OSB1      | State:           RUNNING       | Health:        HEALTH_OK
+Cluster:                   | CurrentMachine:                | JVM Load:      0
+Sockets #:   0             | Heap Sz Cur:     0             | Heap Free Cur: 0
+Java Ver:                  | OS Name:                       | OS Version:
+WLS Version:
+```
+
+### Individual Server (always full-format)
+
+```sh
+$ remy servers AdminServer
+Finding Server information for AdminServer
+Server AdminServer:
+Name:        AdminServer   | State:           RUNNING       | Health:        HEALTH_OK
+Cluster:                   | CurrentMachine:  localhost     | JVM Load:      0
+Sockets #:   8             | Heap Sz Cur:     3151495168    | Heap Free Cur: 423742888
+Java Ver:    1.7.0_80      | OS Name:         Linux         | OS Version:    2.6......
+WLS Version: WebLogic Server 10.3.6.0  Tue Nov 15 08:52:36 PST 2011 1441050
+```
 
 ## Clusters
 
-TODO
+### All Clusters (short form)
+
+```sh
+$ remy clusters
+Finding All Clusters
+Using Full Format? false
+Name: WSM-PM_Cluster
+State:             RUNNING       | Health:               HEALTH_OK     | Cluster Master?       false         | Drop Out Freq:
+Resend Req. Count: 0             | Fragments Sent Count: 0             | Fragments Recv Count: 0
+
+Name: SOA_Cluster
+State:             RUNNING       | Health:               HEALTH_OK     | Cluster Master?       false         | Drop Out Freq:
+Resend Req. Count: 0             | Fragments Sent Count: 0             | Fragments Recv Count: 0
+
+Name: OSB_Cluster
+State:             RUNNING       | Health:               HEALTH_OK     | Cluster Master?       false         | Drop Out Freq:
+Resend Req. Count: 0             | Fragments Sent Count: 0             | Fragments Recv Count: 0
+```
+
+### Individual Cluster (always full-format)
+
+```sh
+$ remy clusters SOA_Cluster
+Finding Cluster information for SOA_Cluster
+Name: SOA_Cluster
+State:             RUNNING       | Health:               HEALTH_OK     | Cluster Master?       false         | Drop Out Freq:
+Resend Req. Count: 0             | Fragments Sent Count: 127690        | Fragments Recv Count: 0
+```
+
 
 ## Datasources
 
@@ -131,7 +201,39 @@ TODO
 
 ## Applications
 
-TODO
+### All Applications (short form)
+
+```
+$ remy applications
+Finding All Applications
+Using Full Format? false
+Name: FileAdapter                                       |AppType: rar  |State: STATE_ACTIVE|Health: HEALTH_OK
+Name: DbAdapter                                         |AppType: rar  |State: STATE_ACTIVE|Health: HEALTH_OK
+Name: JmsAdapter                                        |AppType: rar  |State: STATE_ACTIVE|Health: HEALTH_OK
+Name: AqAdapter                                         |AppType: rar  |State: STATE_ACTIVE|Health: HEALTH_OK
+Name: FtpAdapter                                        |AppType: rar  |State: STATE_ACTIVE|Health: HEALTH_OK
+Name: SocketAdapter                                     |AppType: rar  |State: STATE_ACTIVE|Health: HEALTH_OK
+Name: b2bui                                             |AppType: ear  |State: STATE_ACTIVE|Health: HEALTH_OK
+Name: Healthcare UI                                     |AppType: ear  |State:             |Health:
+Name: DefaultToDoTaskFlow                               |AppType: ear  |State: STATE_ACTIVE|Health: HEALTH_OK
+Name: composer                                          |AppType: ear  |State: STATE_ACTIVE|Health: HEALTH_OK
+```
+
+### Individual Application (always full-format)
+
+In an application, we don't output sections where there is nothing, hence there are pieces missing from this particular
+application.  You may see a lot more data or a lot less depending.
+
+```
+$ remy applications composer
+Finding application information for composer
+Name: composer                                          |AppType: ear  |State: STATE_ACTIVE|Health: HEALTH_OK
+Target States
+        Target: SOA_Cluster                             |State: STATE_ACTIVE
+Work Managers
+        Name: default                                   |Server: WLS_SOA1      |Pending Requests: 0             |Completed Requests: 0
+        Name: wm/SOAWorkManager                         |Server: WLS_SOA1      |Pending Requests: 0             |Completed Requests: 0
+```
 
 # TODO List Prior to `1.0.0`
 
@@ -139,7 +241,7 @@ TODO
   - [ ] Command-Line Flag parsing Tests
   - [X] Configuration Parsing / Flag handling
 - [ ] Pretty print formatting for responses
-  - [ ] Possible Termbox implementation
+  - [ ] Possible `termui` implementation
 - [ ] Enrich documentation across the board
 - [X] Configure downloadable releases
 
