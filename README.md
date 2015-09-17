@@ -73,14 +73,15 @@ An example `wlsrest.toml` or `.wlsrest.toml` config file:
 
 ```
 [/home/user/] $ cat ~/.wlsrest.toml
-AdminURL = "http://localhost:7001"
-Username = "weblogic"
-Password = "{AES}VHQVFwN72jWgRYzWbnJQugUfCa6LAU0W"
+AdminURL = "http://homeserver:7001"
+Username = "homeuser"
+Password = "homepassword"
 ```
 
 ### Generating Configuration for the above
 
-Both the local directory and Home (`~/`) directory config files can be generated for you with `remy config`:
+Both the local directory and Home (`~/`) directory config files can be generated for you with `remy config`.  This
+provides the added benefit of encrypting the password for you:
 
 ```
 $ remy config -h
@@ -109,13 +110,26 @@ Using the Local directory to set the ./wlsrest.toml file
 $ cat wlsrest.toml
 AdminURL = "http://localserver:7001"
 Username = "weblogic"
-Password = "welcome1"
+Password = "{AES}VHQVFwN72jWgRYzWbnJQugUfCa6LAU0W"
 ```
 
-# Examples
+NOTE: Do not attempt to assume there's some inherent security in this.  The password is generated with AES, but the default
+`key` is stored in code.  You can optionally override the default key with an environment variable `WLS_REMYKEY`:
+
+```
+$ export WLS_REMYKEY="My very very very awesome key!!!" # (MUST be 32 bytes in length EXACTLY)
+$ remy config --local
+$ cat .\wlsrest.toml
+AdminURL = "http://localhost:7001"
+Username = "weblogic"
+Password = "{AES}BM1uj9uv1bD7KV6BXapCf1kucxDYbCU6"
+```
+
+# Query Examples
 
 Below are sample outputs provided by the tool itself.  This is a rudimentary **1.0** of the output.  I hope to provide
- some options for different output at some point.
+ some options for different output at some point, such as rendering a widget for use with [`termui`](https://github.com/gizak/termui).
+ Any help would be appreciated.
 
 ## Servers
 
@@ -213,10 +227,12 @@ Name: JmsAdapter                                        |AppType: rar  |State: S
 Name: AqAdapter                                         |AppType: rar  |State: STATE_ACTIVE|Health: HEALTH_OK
 Name: FtpAdapter                                        |AppType: rar  |State: STATE_ACTIVE|Health: HEALTH_OK
 Name: SocketAdapter                                     |AppType: rar  |State: STATE_ACTIVE|Health: HEALTH_OK
+...
 Name: b2bui                                             |AppType: ear  |State: STATE_ACTIVE|Health: HEALTH_OK
 Name: Healthcare UI                                     |AppType: ear  |State:             |Health:
 Name: DefaultToDoTaskFlow                               |AppType: ear  |State: STATE_ACTIVE|Health: HEALTH_OK
 Name: composer                                          |AppType: ear  |State: STATE_ACTIVE|Health: HEALTH_OK
+...
 ```
 
 ### Individual Application (always full-format)
