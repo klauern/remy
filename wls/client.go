@@ -75,7 +75,8 @@ func request(url string, e *AdminServer) (*http.Response, error) {
 	if resp.StatusCode >= 200 && resp.StatusCode < 300 {
 		return resp, nil
 	}
-	return nil, fmt.Errorf("Invalid Response Code: %v\nResponse: %v", resp.StatusCode, resp.Body)
+	body, _ := ioutil.ReadAll(resp.Body)
+	return nil, fmt.Errorf("Invalid Response Code: %v\nResponse: \n%v", resp.StatusCode, string(body))
 }
 
 // Take the raw response from the server and attempt to unmarshal it into the Wrapper type.

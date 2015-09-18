@@ -1,6 +1,7 @@
 package wls
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
 )
