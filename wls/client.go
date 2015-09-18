@@ -32,8 +32,10 @@ type AdminServer struct {
 // We simply wrap that so we can get to the meat of it in the underlying Server type
 //
 // Wrapper is composed of 3 pieces:
-// - Body contains the result of the resource request, included as either a specific Item (Datasource, Server,
-//   Cluster, or Application, or an array of []Item's of the same.
+// - Body contains
+//   - the result of the resource request, included as either a specific Item (Datasource, Server,
+//     Cluster, or Application, or
+//   - an array of []Item's of the same.
 // - Messages contains any error-related messages related to the query.
 type Wrapper struct {
 	Body struct {
@@ -43,6 +45,12 @@ type Wrapper struct {
 	Messages []string `json:"messages,omitempty"`
 }
 
+// requestResource is a wrapper around an http.Client{} instance assuming the following:
+// - the request is a GET
+// - assumes a JSON Accept header
+// - set Basic Authentication based on the *AdminServer passed in
+//
+// returns the *http.Response or an error
 func requestResource(url string, e *AdminServer) (*http.Response, error) {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", url, nil)
