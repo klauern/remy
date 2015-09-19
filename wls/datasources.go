@@ -67,6 +67,44 @@ type RacInstance struct {
 	NumUnavailable                int    `json:",omitempty"`
 }
 
+// GoString produces a GoString of a DataSource that will be more pleasant to the eyes for a command-line interface.
+func (d *DataSource) GoString() string {
+	var buffer bytes.Buffer
+	buffer.WriteString(fmt.Sprintf("Name: %v|Type: %v\n", d.Name, d.Type))
+	buffer.WriteString("Datasource Instances\n")
+	for i := range d.Instances {
+		inst := d.Instances[i]
+		buffer.WriteString(fmt.Sprintf("Server: %v|State: %v|Enabled? %v|JDBC Driver Ver: %v\n", inst.Server, inst.State, inst.Enabled, inst.VersionJDBCDriver))
+		buffer.WriteString(fmt.Sprintf("Active Connections:  Current: %v|High: %v|Average: %v\n", inst.ActiveConnectionsCurrentCount, inst.ActiveConnectionsHighCount, inst.ActiveConnectionsAverageCount))
+		buffer.WriteString(fmt.Sprintf("Connection Delay Time: %v|Total Count: %v\n", inst.ConnectionDelayTime, inst.ConnectionsTotalCount))
+		buffer.WriteString(fmt.Sprintf("Capacity - Current : %v|High: %v|Num Avail: %v|Num Unavailable: %v", inst.CurrCapacity, inst.CurrCapacityHighCount,
+			inst.NumAvailable, inst.NumUnavailable))
+		buffer.WriteString("Reserve Requests\n----------------\n")
+		buffer.WriteString(fmt.Sprintf("Failures -  Reserve Reqeuest Count: %v}Reconnect Count: %v|RCLB Based Borrow : %v|Affinity Based Borrow: %v|Leaked Connection Count: %v\n",
+			inst.FailedReserveRequestCount, inst.FailuresToReconnectCount, inst.FailedRCLBBasedBorrowCount, inst.FailedAffinityBasedBorrowCount, inst.LeakedConnectionCount))
+		buffer.WriteString(fmt.Sprintf("Prepared Statement Cache - Access cnt: %v|Add Cnt: %v|Current Size: %v|Delete Count: %v|Hit Count: %v|Miss Count: %v\n",
+			inst.PrepStmtCacheAccessCount, inst.PrepStmtCacheAddCount, inst.PrepStmtCacheCurrentSize, inst.PrepStmtCacheDeleteCount, inst.PrepStmtCacheDeleteCount,
+			inst.PrepStmtCacheHitCount, inst.PrepStmtCacheMissCount))
+		buffer.WriteString("Waiting Statistics: \n------------------\n")
+		buffer.WriteString(fmt.Sprintf("Wait Seconds High: %v|Currently Waiting: %v|Wait Fail Tot: %v|High Count: %v\n", inst.WaitSecondsHighCount,
+			inst.WaitingForConnectionCurrentCount, inst.WaitingForConnectionFailureTotal, inst.WaitingForConnectionHighCount))
+		buffer.WriteString(fmt.Sprintf("Connection Success Tot: %v|Waiting Tot: %v\n", inst.WaitingForConnectionSuccessTotal, inst.WaitingForConnectionTotal))
+		buffer.WriteString("RCLB Stats\n----------\n")
+		buffer.WriteString(fmt.Sprintf("Successful RCLB Borrow Count: %v|Failed RCLB Borrow Count: %v\n", inst.SuccessfulRCLBBasedBorrowCount, inst.FailedRCLBBasedBorrowCount))
+		buffer.WriteString("Affinity Borrows:\n")
+		buffer.WriteString(fmt.Sprintf("Success Borrows: %v|Failed Borrows: %v\n", inst.SuccessfulAffinityBasedBorrowCount, inst.FailedAffinityBasedBorrowCount))
+		for j := range inst.RacInstances {
+			rac := inst.RacInstances[j]
+			buffer.WriteString("RAC Instances\n-------------\n")
+			buffer.WriteString(fmt.Sprintf("Name: %v|State: %v|Enabled: %v|Signature: %v\n", rac.InstanceName, rac.State, rac.Enabled, rac.Signature))
+			buffer.WriteString(fmt.Sprintf("Current Weight: %v|Active Conn: %v|Reserve Req. Cnt: %v\n", rac.CurrentWeight, rac.ActiveConnectionsCurrentCount, rac.ReserveRequestCount))
+			buffer.WriteString(fmt.Sprintf("Total Connections: %v|Capacity: %v|Num Available: %v|Num Unavailable: %v\n", rac.ConnectionsTotalCount,
+				rac.CurrCapacity, rac.NumAvailable, rac.NumUnavailable))
+		}
+	}
+	return buffer.String()
+}
+
 // DataSources returns all generic and GridLink JDBC data sources configured in the domain, and provides run-time information for each data source.
 func (s *AdminServer) DataSources(isFullFormat bool) ([]DataSource, error) {
 	url := fmt.Sprintf("%v%v/datasources", s.AdminURL, MonitorPath)
