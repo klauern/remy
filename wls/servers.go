@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+
+	ui "github.com/gizak/termui"
 )
 
 // Server is a specific Server instance deployed to the domain under the given AdminServer
@@ -23,6 +25,15 @@ type Server struct {
 	JvmProcessorLoad        float64 `json:",omitempty"`
 }
 
+// NewWidget will create a termui widget
+func (s *Server) NewWidget() ui.Bufferer {
+	uis := ui.NewPar(s.Name)
+	// TODO: add rest of stuff
+	ui.NewRow()
+	return uis
+}
+
+// GoString produces a GoString formatted for the console and a CLI interface.
 func (s *Server) GoString() string {
 	var buffer bytes.Buffer
 	buffer.WriteString(fmt.Sprintf("Name:        %-14v| State:           %-14v| Health:        %-55v\n", s.Name, s.State, s.Health))
