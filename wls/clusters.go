@@ -22,10 +22,11 @@ type Cluster struct {
 	} `json:"servers,omitempty"`
 }
 
+// GoString creates a GoString of the Cluster type for use in command-line applications.
 func (c *Cluster) GoString() string {
 	var buffer bytes.Buffer
 	buffer.WriteString(fmt.Sprintf("Name: %v\n", c.Name))
-	for i, _ := range c.Servers {
+	for i := range c.Servers {
 		buffer.WriteString(fmt.Sprintf("State:             %-14v| Health:               %-14v| Cluster Master?       %-14v| Drop Out Freq: %-14v\n",
 			c.Servers[i].State, c.Servers[i].Health, c.Servers[i].IsClusterMaster, c.Servers[i].DropOutFrequency))
 		buffer.WriteString(fmt.Sprintf("Resend Req. Count: %-14v| Fragments Sent Count: %-14v| Fragments Recv Count: %-14v\n",
