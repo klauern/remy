@@ -1,6 +1,8 @@
 # remy
 CLI for interacting with the WebLogic Server RESTful Management Services.
 
+[![Go Report Card](https://goreportcard.com/badge/klauern/remy)](https://goreportcard.com/report/klauern/remy)
+
 [![wercker status](https://app.wercker.com/status/fe26b6defa4f97dde747ae1f1fbcb815/m "wercker status")](https://app.wercker.com/project/bykey/fe26b6defa4f97dde747ae1f1fbcb815)
 
 `remy` is an application I wrote to learn a little about [golang](http://www.golang.org) as well as to itch a little
