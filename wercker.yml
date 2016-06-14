@@ -48,8 +48,12 @@ build:
     - golint
 
     - script:
-        name: install goxc for release
-        code: go get github.com/laher/goxc
+        name: install goxc (and related deps) for release
+        code: |
+          go get github.com/laher/goxc
+          go get github.com/gorilla/mux
+          go get github.com/gorilla/context
+          go get github.com/inconshreveable/mousetrap
 #    - script:
 #        name: configure deploy key for goxc
 #        code: goxc -wlc default publish-github -apikey=$GITHUB_TOKEN
