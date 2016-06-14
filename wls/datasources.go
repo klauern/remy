@@ -83,7 +83,7 @@ func (d *DataSource) GoString() string {
 		buffer.WriteString(fmt.Sprintf("Failures -  Reserve Reqeuest Count: %v}Reconnect Count: %v|RCLB Based Borrow : %v|Affinity Based Borrow: %v|Leaked Connection Count: %v\n",
 			inst.FailedReserveRequestCount, inst.FailuresToReconnectCount, inst.FailedRCLBBasedBorrowCount, inst.FailedAffinityBasedBorrowCount, inst.LeakedConnectionCount))
 		buffer.WriteString(fmt.Sprintf("Prepared Statement Cache - Access cnt: %v|Add Cnt: %v|Current Size: %v|Delete Count: %v|Hit Count: %v|Miss Count: %v\n",
-			inst.PrepStmtCacheAccessCount, inst.PrepStmtCacheAddCount, inst.PrepStmtCacheCurrentSize, inst.PrepStmtCacheDeleteCount, inst.PrepStmtCacheDeleteCount,
+			inst.PrepStmtCacheAccessCount, inst.PrepStmtCacheAddCount, inst.PrepStmtCacheCurrentSize, inst.PrepStmtCacheDeleteCount,
 			inst.PrepStmtCacheHitCount, inst.PrepStmtCacheMissCount))
 		buffer.WriteString("Waiting Statistics: \n------------------\n")
 		buffer.WriteString(fmt.Sprintf("Wait Seconds High: %v|Currently Waiting: %v|Wait Fail Tot: %v|High Count: %v\n", inst.WaitSecondsHighCount,
