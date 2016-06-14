@@ -3,15 +3,16 @@
   <component name="CompilerConfiguration">
     <resourceExtensions />
     <wildcardResourcePatterns>
-      <entry name="!?*.java" />
-      <entry name="!?*.form" />
-      <entry name="!?*.class" />
-      <entry name="!?*.groovy" />
-      <entry name="!?*.scala" />
-      <entry name="!?*.flex" />
-      <entry name="!?*.kt" />
-      <entry name="!?*.clj" />
-      <entry name="!?*.aj" />
+      <entry name="?*.properties" />
+      <entry name="?*.xml" />
+      <entry name="?*.gif" />
+      <entry name="?*.png" />
+      <entry name="?*.jpeg" />
+      <entry name="?*.jpg" />
+      <entry name="?*.html" />
+      <entry name="?*.dtd" />
+      <entry name="?*.tld" />
+      <entry name="?*.ftl" />
     </wildcardResourcePatterns>
     <annotationProcessing>
       <profile default="true" name="Default" enabled="false">
