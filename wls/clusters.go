@@ -36,12 +36,12 @@ func (c *Cluster) GoString() string {
 }
 
 // Clusters returns all clusters configured in a domain and provides run-time information for each cluster and for each cluster's member servers, including all the member servers' state and health.
-func (s *AdminServer) Clusters(fullFormat bool) ([]Cluster, error) {
-	url := fmt.Sprintf("%v%v/clusters", s.AdminURL, MonitorPath)
+func (a *AdminServer) Clusters(fullFormat bool) ([]Cluster, error) {
+	url := fmt.Sprintf("%v%v/clusters", a.AdminURL, MonitorPath)
 	if fullFormat {
 		url = url + "?format=full"
 	}
-	w, err := requestAndUnmarshal(url, s)
+	w, err := requestAndUnmarshal(url, a)
 	if err != nil {
 		return nil, err
 	}
@@ -53,9 +53,9 @@ func (s *AdminServer) Clusters(fullFormat bool) ([]Cluster, error) {
 }
 
 // Cluster returns run-time information for the specified cluster and its member servers, including the member servers' state and health.
-func (s *AdminServer) Cluster(clusterName string) (*Cluster, error) {
-	url := fmt.Sprintf("%v%v/clusters/%v", s.AdminURL, MonitorPath, clusterName)
-	w, err := requestAndUnmarshal(url, s)
+func (a *AdminServer) Cluster(clusterName string) (*Cluster, error) {
+	url := fmt.Sprintf("%v%v/clusters/%v", a.AdminURL, MonitorPath, clusterName)
+	w, err := requestAndUnmarshal(url, a)
 	if err != nil {
 		return nil, err
 	}

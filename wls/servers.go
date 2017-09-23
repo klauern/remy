@@ -46,12 +46,12 @@ func (s *Server) GoString() string {
 
 // Servers returns all servers configured in a domain and provides run-time information for each server, including the server state and health.
 // isFullFormat determines whether to return a fully-filled out list of Servers, or only a shortened version of the Servers list.
-func (s *AdminServer) Servers(isFullFormat bool) ([]Server, error) {
-	url := fmt.Sprintf("%v%v/servers", s.AdminURL, MonitorPath)
+func (a *AdminServer) Servers(isFullFormat bool) ([]Server, error) {
+	url := fmt.Sprintf("%v%v/servers", a.AdminURL, MonitorPath)
 	if isFullFormat {
 		url = url + "?format=full"
 	}
-	w, err := requestAndUnmarshal(url, s)
+	w, err := requestAndUnmarshal(url, a)
 	if err != nil {
 		return nil, err
 	}
@@ -63,9 +63,9 @@ func (s *AdminServer) Servers(isFullFormat bool) ([]Server, error) {
 }
 
 // Server returns information for a specified server in a domain, including the server state, health, and JVM heap availability.
-func (s *AdminServer) Server(serverName string) (*Server, error) {
-	url := fmt.Sprintf("%v%v/servers/%v", s.AdminURL, MonitorPath, serverName)
-	w, err := requestAndUnmarshal(url, s)
+func (a *AdminServer) Server(serverName string) (*Server, error) {
+	url := fmt.Sprintf("%v%v/servers/%v", a.AdminURL, MonitorPath, serverName)
+	w, err := requestAndUnmarshal(url, a)
 	if err != nil {
 		return nil, err
 	}

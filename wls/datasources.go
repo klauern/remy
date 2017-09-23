@@ -106,12 +106,12 @@ func (d *DataSource) GoString() string {
 }
 
 // DataSources returns all generic and GridLink JDBC data sources configured in the domain, and provides run-time information for each data source.
-func (s *AdminServer) DataSources(isFullFormat bool) ([]DataSource, error) {
-	url := fmt.Sprintf("%v%v/datasources", s.AdminURL, MonitorPath)
+func (a *AdminServer) DataSources(isFullFormat bool) ([]DataSource, error) {
+	url := fmt.Sprintf("%v%v/datasources", a.AdminURL, MonitorPath)
 	if isFullFormat {
 		url = url + "?format=full"
 	}
-	w, err := requestAndUnmarshal(url, s)
+	w, err := requestAndUnmarshal(url, a)
 	if err != nil {
 		return nil, err
 	}
@@ -123,9 +123,9 @@ func (s *AdminServer) DataSources(isFullFormat bool) ([]DataSource, error) {
 }
 
 // DataSource returns run-time information for the specified data source, including Oracle RAC statistics for GridLink data sources.
-func (s *AdminServer) DataSource(dataSourceName string) (*DataSource, error) {
-	url := fmt.Sprintf("%v%v/datasources/%v", s.AdminURL, MonitorPath, dataSourceName)
-	w, err := requestAndUnmarshal(url, s)
+func (a *AdminServer) DataSource(dataSourceName string) (*DataSource, error) {
+	url := fmt.Sprintf("%v%v/datasources/%v", a.AdminURL, MonitorPath, dataSourceName)
+	w, err := requestAndUnmarshal(url, a)
 	if err != nil {
 		return nil, err
 	}

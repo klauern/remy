@@ -155,12 +155,12 @@ func (a *Application) GoString() string {
 //   each of the subytpes within an Application.  By default, this is false.
 // This function returns a listing of []Application's on the specified AdminServer, or an error denoting any issues
 // making the callout.
-func (s *AdminServer) Applications(isFullFormat bool) ([]Application, error) {
-	url := fmt.Sprintf("%v%v/applications", s.AdminURL, MonitorPath)
+func (a *AdminServer) Applications(isFullFormat bool) ([]Application, error) {
+	url := fmt.Sprintf("%v%v/applications", a.AdminURL, MonitorPath)
 	if isFullFormat {
 		url = url + "?format=full"
 	}
-	w, err := requestAndUnmarshal(url, s)
+	w, err := requestAndUnmarshal(url, a)
 	if err != nil {
 		return nil, err
 	}
@@ -175,9 +175,9 @@ func (s *AdminServer) Applications(isFullFormat bool) ([]Application, error) {
 // on how to get all of the []Application's on the server.
 // This will always return a full format, including all of the details in the underlying struct types.
 // It may also return an error if there were any issues calling out to the AdminServer
-func (s *AdminServer) Application(app string) (*Application, error) {
-	url := fmt.Sprintf("%v%v/applications/%v", s.AdminURL, MonitorPath, app)
-	w, err := requestAndUnmarshal(url, s)
+func (a *AdminServer) Application(app string) (*Application, error) {
+	url := fmt.Sprintf("%v%v/applications/%v", a.AdminURL, MonitorPath, app)
+	w, err := requestAndUnmarshal(url, a)
 	if err != nil {
 		return nil, err
 	}

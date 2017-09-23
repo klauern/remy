@@ -98,10 +98,10 @@ func unmarshalWrapper(data []byte) (*Wrapper, error) {
 
 // EncodeConfigFile will take an AdminServer instance and convert it to a TOML-formatted byte buffer.
 // This TOML byte buffer can then be serialized to disk as a configuration file.
-func (cfg AdminServer) EncodeConfigFile() *bytes.Buffer {
+func (a AdminServer) EncodeConfigFile() *bytes.Buffer {
 	var buf bytes.Buffer
 	enc := toml.NewEncoder(&buf)
-	err := enc.Encode(cfg)
+	err := enc.Encode(a)
 	if err != nil {
 		panic(fmt.Errorf("unable to encode wlsrest configuration: %s \n", err))
 	}
