@@ -153,6 +153,7 @@ func (a *Application) GoString() string {
 // Applications returns all applications deployed in the domain and their run-time information, including the application type and their state and health.
 // - isfullFormat specifies whether to request the FULL format for an Application.  Much more data is brought back for
 //   each of the subytpes within an Application.  By default, this is false.
+//
 // This function returns a listing of []Application's on the specified AdminServer, or an error denoting any issues
 // making the callout.
 func (a *AdminServer) Applications(isFullFormat bool) ([]Application, error) {
