@@ -17,6 +17,7 @@ import (
 	"github.com/klauern/remy/wls"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/pkg/errors"
 )
 
 const (
@@ -231,14 +232,19 @@ func findConfiguration() *wls.AdminServer {
 	if cwd, err := os.Getwd(); err == nil {
 		viper.SetConfigName(ConfigFile)
 		viper.AddConfigPath(cwd)
-		viper.ReadInConfig()
+		if err = viper.ReadInConfig(); err != nil {
+			panic(errors.WithMessage(err, "unable to read in configuration"))
+		}
+
 
 	}
 	// Add the ~/.wlsrest.toml config next.  It will fall-through to find this one if there's not one in the current dir
 	viper.SetConfigName("." + ConfigFile)
 	if u, err := user.Current(); err == nil {
 		viper.AddConfigPath(u.HomeDir)
-		viper.ReadInConfig()
+		if err = viper.ReadInConfig(); err != nil {
+			panic(errors.WithMessage(err, "unable to read in configuration"))
+		}
 	}
 
 	// Define environment variables to look for.
@@ -385,9 +391,16 @@ func Run(cfg *wls.AdminServer) {
 	configureCmd.Flags().BoolVar(&FlagHomeConfig, HomeSetFlag, false, "Generate/Update the ~/$HOME config file")
 	configureCmd.Flags().BoolVar(&FlagLocalConfig, LocalSetFlag, false, "Generate/Update the local directory's config file")
 
-	viper.BindPFlags(WlsRestCmd.PersistentFlags())
-	viper.BindPFlags(configureCmd.Flags())
+	if err := viper.BindPFlags(WlsRestCmd.PersistentFlags()); err != nil {
+		panic(errors.WithMessage(err, "cannot bind flag for "+WlsRestCmd.Name()))
+	}
+	if err := viper.BindPFlags(configureCmd.Flags()); err != nil {
+		panic(errors.WithMessage(err, "cannot bind flag for "+configureCmd.Name()))
+	}
+
 
 	WlsRestCmd.AddCommand(applicationsCmd, configureCmd, clustersCmd, datasourcesCmd, serversCmd, versionCmd)
-	WlsRestCmd.Execute()
+	if err := WlsRestCmd.Execute(); err != nil {
+		panic(errors.WithMessage(err, "error executing "+WlsRestCmd.Name()))
+	}
 }
