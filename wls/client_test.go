@@ -80,7 +80,7 @@ func TestServerResourceRelatedCalls(t *testing.T) {
 		{server.ClusterName, ""},
 		{server.State, "RUNNING"},
 		{server.CurrentMachine, "machine-0"},
-		{server.WeblogicVersion, "WebLogic Server 12.1.1.0.0 Thu May 5 01:17:16 2011 PDT"},
+		{server.WebLogicVersion, "WebLogic Server 12.1.1.0.0 Thu May 5 01:17:16 2011 PDT"},
 		{fmt.Sprint(server.OpenSocketsCurrentCount), "2"},
 		{server.Health, "HEALTH_OK"},
 		{fmt.Sprint(server.HeapSizeCurrent), "536870912"},

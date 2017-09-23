@@ -15,7 +15,7 @@ type Server struct {
 	Health                  string  `json:"health"`
 	ClusterName             string  `json:"clusterName,omitempty"`
 	CurrentMachine          string  `json:",omitempty"`
-	WeblogicVersion         string  `json:",omitempty"`
+	WebLogicVersion         string  `json:",omitempty"`
 	OpenSocketsCurrentCount float64 `json:",omitempty"`
 	HeapSizeCurrent         int     `json:",omitempty"`
 	HeapFreeCurrent         int     `json:",omitempty"`
@@ -40,7 +40,7 @@ func (s *Server) GoString() string {
 	buffer.WriteString(fmt.Sprintf("Cluster:     %-14v| CurrentMachine:  %-14v| JVM Load:      %-55v\n", s.ClusterName, s.CurrentMachine, s.JvmProcessorLoad))
 	buffer.WriteString(fmt.Sprintf("Sockets #:   %-14v| Heap Sz Cur:     %-14v| Heap Free Cur: %-55v\n", s.OpenSocketsCurrentCount, s.HeapSizeCurrent, s.HeapFreeCurrent))
 	buffer.WriteString(fmt.Sprintf("Java Ver:    %-14v| OS Name:         %-14v| OS Version:    %-55v\n", s.JavaVersion, s.OsName, s.OsVersion))
-	buffer.WriteString(fmt.Sprintf("WLS Version: %-14v\n", s.WeblogicVersion))
+	buffer.WriteString(fmt.Sprintf("WLS Version: %-14v\n", s.WebLogicVersion))
 	return buffer.String()
 }
 
