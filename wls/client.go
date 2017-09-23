@@ -103,7 +103,7 @@ func (a AdminServer) EncodeConfigFile() *bytes.Buffer {
 	enc := toml.NewEncoder(&buf)
 	err := enc.Encode(a)
 	if err != nil {
-		panic(fmt.Errorf("unable to encode wlsrest configuration: %s \n", err))
+		panic(fmt.Errorf("unable to encode wlsrest configuration: %s", err))
 	}
 	return &buf
 }
