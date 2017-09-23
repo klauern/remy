@@ -103,13 +103,13 @@ func Servers(cmd *cobra.Command, args []string) {
 func Clusters(cmd *cobra.Command, args []string) {
 	env := findConfiguration()
 	if len(args) > 2 {
-		panic(fmt.Sprintf("Too many arguments.  enter 'help clusters' command to find out how to call this"))
+		panic(fmt.Sprintf("too many arguments.  enter 'help clusters' command to find out how to call this"))
 	}
 	if len(args) == 1 {
 		fmt.Printf("Finding Cluster information for %v\n", args[0])
 		cluster, err := env.Cluster(args[0])
 		if err != nil {
-			panic(fmt.Sprintf("Unable to get Clusters: %v", err))
+			panic(fmt.Sprintf("unable to get Clusters: %v", err))
 		}
 		fmt.Printf("%#v\n", cluster)
 	}
@@ -117,7 +117,7 @@ func Clusters(cmd *cobra.Command, args []string) {
 		fmt.Printf("Finding All Clusters\nUsing Full Format? %v\n", FullFormat)
 		clusters, err := env.Clusters(FullFormat)
 		if err != nil {
-			panic(fmt.Sprintf("Unable to get Clusters: %v", err))
+			panic(fmt.Sprintf("unable to get Clusters: %v", err))
 		}
 		for i := range clusters {
 			fmt.Printf("%#v\n", &clusters[i])
