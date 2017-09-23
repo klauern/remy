@@ -47,6 +47,7 @@ build:
 
     # Run golint to find suggestions for code fixes after everything else passes (polish)
     - golint
+        exclude: "^vendor"
 
     - script:
         name: install goxc (and related deps) for release
