@@ -28,9 +28,10 @@ build:
 
     # Gets the dependencies
     - script:
-        name: go get
+        name: go get -u github.com/golang/dep/cmd/dep
         code: |
-          go get -t ./...
+          go get -u github.com/golang/dep/cmd/dep
+          dep ensure
 
     # Build the project
     - script:
