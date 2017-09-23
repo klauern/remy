@@ -60,7 +60,7 @@ func TestUnmarshalSingleCluster(t *testing.T) {
 		{cluster.Servers[1].Name, "ms2"},
 		{cluster.Servers[1].State, "RUNNING"},
 		{cluster.Servers[1].Health, "OK"},
-		{fmt.Sprint(cluster.Servers[1].DropOutFrequency), ""},
+		{cluster.Servers[1].DropOutFrequency, ""},
 	}
 
 	for _, tt := range serversJSONTests {
