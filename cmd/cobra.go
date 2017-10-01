@@ -14,10 +14,10 @@ import (
 	"io"
 	"strings"
 
-    wls "github.com/klauern/remy"
+	wls "github.com/klauern/remy"
+	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"github.com/pkg/errors"
 )
 
 const (
@@ -236,7 +236,6 @@ func findConfiguration() *wls.AdminServer {
 			panic(errors.WithMessage(err, "unable to read in configuration"))
 		}
 
-
 	}
 	// Add the ~/.wlsrest.toml config next.  It will fall-through to find this one if there's not one in the current dir
 	viper.SetConfigName("." + ConfigFile)
@@ -397,7 +396,6 @@ func Run(cfg *wls.AdminServer) {
 	if err := viper.BindPFlags(configureCmd.Flags()); err != nil {
 		panic(errors.WithMessage(err, "cannot bind flag for "+configureCmd.Name()))
 	}
-
 
 	WlsRestCmd.AddCommand(applicationsCmd, configureCmd, clustersCmd, datasourcesCmd, serversCmd, versionCmd)
 	if err := WlsRestCmd.Execute(); err != nil {
