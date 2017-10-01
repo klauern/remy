@@ -1,13 +1,13 @@
 package main
 
 import (
-	"github.com/klauern/remy/cli"
-	"github.com/klauern/remy/wls"
+    "github.com/klauern/remy/cmd"
+    cfg "github.com/klauern/remy"
 )
 
 // Config is the base configuration used for all REST requests to the AdminServer
-var Config wls.AdminServer
+var Config cfg.AdminServer
 
 func main() {
-	cli.Run(&Config)
+    cmd.Run(&Config)
 }

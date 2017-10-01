@@ -27,7 +27,7 @@ The latest version I put out there is `v0.2.1`, and that can be found on the rel
 For the die-hard coder in you:
 
 ```sh
-go get -u github.com/klauern/remy
+go get -u github.com/klauern/remy/cmd/remy
 ```
 
 # Usage

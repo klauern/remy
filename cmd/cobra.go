@@ -1,4 +1,4 @@
-package cli
+package cmd
 
 import (
 	"fmt"
@@ -14,7 +14,7 @@ import (
 	"io"
 	"strings"
 
-	"github.com/klauern/remy/wls"
+    wls "github.com/klauern/remy"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/pkg/errors"
