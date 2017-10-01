@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/gorilla/mux"
+    "github.com/stretchr/testify/assert"
 )
 
 func TestClientAuthenticatedCalls(t *testing.T) {
@@ -18,8 +19,10 @@ func TestClientAuthenticatedCalls(t *testing.T) {
 	}))
 	defer ts.Close()
 	t.Log(ts.URL)
-	requestResource(ts.URL,
+
+    _, err := requestResource(ts.URL,
 		&AdminServer{AdminURL: ts.URL, Username: "user", Password: "pass"})
+    assert.NoError(t, err)
 }
 
 func TestAcceptJsonHeaderCall(t *testing.T) {
@@ -31,7 +34,8 @@ func TestAcceptJsonHeaderCall(t *testing.T) {
 	defer ts.Close()
 	t.Log(ts.URL)
 
-	requestResource(ts.URL, &AdminServer{AdminURL: ts.URL, Username: "user", Password: "pass"})
+    _, err := requestResource(ts.URL, &AdminServer{AdminURL: ts.URL, Username: "user", Password: "pass"})
+    assert.NoError(t, err)
 }
 
 func CreateTestServerResourceRouters() *mux.Router {
