@@ -1,17 +1,16 @@
 package cmd
 
 import (
-	"fmt"
-	"io/ioutil"
-	"os"
-	"os/user"
-	"path"
-
 	"crypto/aes"
 	"crypto/cipher"
 	"crypto/rand"
 	"encoding/base64"
+	"fmt"
 	"io"
+	"io/ioutil"
+	"os"
+	"os/user"
+	"path"
 	"strings"
 
 	wls "github.com/klauern/remy"
