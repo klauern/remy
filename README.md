@@ -2,6 +2,7 @@
 CLI for interacting with the WebLogic Server RESTful Management Services.
 
 [![Go Report Card](https://goreportcard.com/badge/klauern/remy)](https://goreportcard.com/report/klauern/remy)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fklauern%2Fremy.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fklauern%2Fremy?ref=badge_shield)
 
 [![wercker status](https://app.wercker.com/status/fe26b6defa4f97dde747ae1f1fbcb815/m "wercker status")](https://app.wercker.com/project/bykey/fe26b6defa4f97dde747ae1f1fbcb815)
 
@@ -279,3 +280,7 @@ Pull requests are welcome.  If you find this useful, please share and share alik
 
 I can be reached on Twitter [@klauern](https://twitter.com/klauern) as well as on this repo.
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fklauern%2Fremy.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fklauern%2Fremy?ref=badge_large)
